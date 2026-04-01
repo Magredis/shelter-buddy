@@ -160,6 +160,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);height:100%;
 .sh-loading{text-align:center;padding:16px;color:var(--text2);font-size:12px}
 .sh-loading .spinner{display:inline-block;width:20px;height:20px;border:2px solid var(--border2);border-top-color:var(--green);border-radius:50%;animation:spin .8s linear infinite;margin-bottom:6px}
 @keyframes spin{to{transform:rotate(360deg)}}
+.demo-banner{background:rgba(255,209,102,.08);border:1px solid rgba(255,209,102,.2);border-radius:10px;padding:8px 12px;margin-bottom:10px;font-size:11px;color:var(--yellow);text-align:center;font-weight:500}
+.demo-banner .demo-tag{display:inline-block;background:var(--yellow);color:#000;font-size:9px;font-weight:800;padding:2px 6px;border-radius:4px;margin-right:6px;letter-spacing:.5px}
 </style>
 </head>
 <body>
@@ -174,7 +176,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);height:100%;
   <div class="header">
     <div class="logo">
       <div class="logo-badge">🛡️</div>
-      <div><div class="logo-name">Миклатон</div><div class="logo-sub">SHELTER BUDDY v2.1</div></div>
+      <div><div class="logo-name">Миклатон</div><div class="logo-sub">SHELTER BUDDY v2.2</div></div>
     </div>
     <div class="header-right">
       <button class="sim-btn" onclick="triggerAlert()">⚠️ Тест</button>
@@ -195,6 +197,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);height:100%;
   </div>
   <div class="content">
     <div class="panel active" id="p-home">
+      <div id="demoBannerHome"></div>
       <div class="card"><div class="card-title">Ближайшие укрытия</div><div id="shelterContent"><div class="gps-prompt"><p>📍 Нажми, чтобы показать ближайшие укрытия рядом с тобой</p><button class="gps-btn" onclick="requestGPS()">📍 Где я?</button></div></div></div>
       <div class="map-frame" id="mapFrame" style="display:none"></div>
       <div class="card"><div class="card-title">Быстрые действия</div><div class="qa-grid">
@@ -210,6 +213,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);height:100%;
       </div></div>
     </div>
     <div class="panel" id="p-stats">
+      <div id="demoBannerStats"></div>
       <div class="card"><div class="card-title">Общая сводка</div><div class="stats-row">
         <div class="stat"><div class="stat-n r" id="sToday">0</div><div class="stat-l">Сегодня</div></div>
         <div class="stat"><div class="stat-n y" id="sWeek">0</div><div class="stat-l">Неделя</div></div>
@@ -219,6 +223,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);height:100%;
       <div class="card"><div class="card-title">Топ районов</div><div id="topRegions"></div></div>
     </div>
     <div class="panel" id="p-log">
+      <div id="demoBannerLog"></div>
       <div class="log-filters"><div class="pill on" data-f="all">Все</div><div class="pill" data-f="1">🚀 Ракеты</div><div class="pill" data-f="2">✈️ БПЛА</div><div class="pill" data-f="3">🌍 Землетрясения</div></div>
       <div id="logList"></div>
     </div>
@@ -239,7 +244,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);height:100%;
         <div class="setting"><div><div class="setting-t">Сброс фитнеса</div><div class="setting-d">Обнулить забеги и калории</div></div><button class="sim-btn" onclick="resetFitness()" style="border-color:var(--orange);color:var(--orange)">🔄 Сброс</button></div>
       </div>
       <div class="card"><div class="card-title">Информация</div><div class="info-text">Источник: Пикуд ха-Ореф (oref.org.il)<br>Укрытия: OpenStreetMap (Overpass API)<br>Обновление: каждые 10 секунд<br>Данные кешируются для оффлайн-доступа<br><br><small>⚠️ Приложение НЕ заменяет официальное приложение Пикуд ха-Ореф!</small></div></div>
-      <div class="footer-note">Миклатон v2.1 · Shelter Buddy</div>
+      <div class="footer-note">Миклатон v2.2 · Shelter Buddy</div>
     </div>
   </div>
 </div>
@@ -250,7 +255,7 @@ var FOOD=[{c:0,t:'💤 Ноль забегов = ноль калорий. Ешь
 var RANKS=[{n:0,r:'🛋️ Диван',d:'Недостаточно данных.'},{n:1,r:'🐢 Быстрая черепаха',d:'Добежал один раз!'},{n:3,r:'🐇 Кролик-укрытник',d:'Знаешь дорогу с закрытыми глазами.'},{n:7,r:'🦊 Лис убежища',d:'Соседи завидуют.'},{n:15,r:'🦅 Орёл миномёта',d:'Золотая медаль.'},{n:30,r:'⚡ Флэш',d:'В укрытии раньше сирены.'}];
 
 /* ---- STATE ---- */
-var S={history:[],active:null,timerIv:null,pollIv:null,conn:false,filter:'all',lat:null,lng:null,cityName:null,localShelters:[],runs:0,spr:95,cfg:{offline:true,refresh:true}};
+var S={history:[],active:null,timerIv:null,pollIv:null,conn:false,filter:'all',lat:null,lng:null,cityName:null,localShelters:[],runs:0,spr:95,dataSource:'unknown',cfg:{offline:true,refresh:true}};
 function $(id){return document.getElementById(id)}
 function sv(k,v){try{localStorage.setItem('mk_'+k,JSON.stringify(v))}catch(e){}}
 function ld(k){try{return JSON.parse(localStorage.getItem('mk_'+k))}catch(e){return null}}
@@ -402,14 +407,58 @@ window.resetFitness=function(){S.runs=0;S.spr=80+Math.floor(Math.random()*40);sv
 function startPoll(){stopPoll();fetchAl();S.pollIv=setInterval(fetchAl,10000)}
 function stopPoll(){if(S.pollIv){clearInterval(S.pollIv);S.pollIv=null}}
 
+function tryFetch(url,opts){
+  return fetch(url,Object.assign({cache:'no-store'},opts||{})).then(function(r){if(!r.ok)throw new Error(r.status);return r.text()})
+}
+function proxyUrl(u){return'https://api.allorigins.win/raw?url='+encodeURIComponent(u)}
+
 function fetchAl(){
-  fetch('https://www.oref.org.il/WarningMessages/alert/alerts.json',{headers:{'Referer':'https://www.oref.org.il/','X-Requested-With':'XMLHttpRequest'},cache:'no-store'}).then(function(r){if(!r.ok)throw 0;return r.text()}).then(function(t){t=t.replace(/^\uFEFF/,'').trim();setC(true);if(!t||t==='[]'||t==='{}'){if(S.active)clrAl();return}var d=JSON.parse(t);if(d&&d.data&&d.data.length>0)fireAl(d);else if(S.active)clrAl()}).catch(function(){setC(false)})
+  var url='https://www.oref.org.il/WarningMessages/alert/alerts.json';
+  var hdrs={headers:{'Referer':'https://www.oref.org.il/','X-Requested-With':'XMLHttpRequest'}};
+  tryFetch(url,hdrs).catch(function(){return tryFetch(proxyUrl(url))}).then(function(t){
+    t=t.replace(/^\uFEFF/,'').trim();setC('live');
+    if(!t||t==='[]'||t==='{}'){if(S.active)clrAl();return}
+    var d=JSON.parse(t);if(d&&d.data&&d.data.length>0)fireAl(d);else if(S.active)clrAl()
+  }).catch(function(){setC('off')})
 }
 
 function fetchHist(){
-  fetch('https://www.oref.org.il/WarningMessages/alert/History/AlertsHistory.json',{headers:{'Referer':'https://www.oref.org.il/','X-Requested-With':'XMLHttpRequest'},cache:'no-store'}).then(function(r){if(!r.ok)throw 0;return r.text()}).then(function(t){t=t.replace(/^\uFEFF/,'').trim();if(t){var d=JSON.parse(t);if(Array.isArray(d)&&d.length){S.history=d;if(S.cfg.offline)sv('history',d);setC(true);rv();return}}throw 0}).catch(function(){
-    fetch('https://api.tzevaadom.co.il/alerts-history',{cache:'no-store'}).then(function(r){return r.ok?r.json():Promise.reject()}).then(function(d){if(Array.isArray(d)&&d.length){S.history=d.map(function(a){return{alertDate:a.date||a.alertDate||'',title:a.title||'',data:a.cities?a.cities.join(', '):(a.data||''),category:a.category||a.cat||1}});if(S.cfg.offline)sv('history',S.history);setC(true);rv()}else throw 0}).catch(function(){if(!S.history.length)genDemo();rv()})
+  var url1='https://www.oref.org.il/WarningMessages/alert/History/AlertsHistory.json';
+  var hdrs={headers:{'Referer':'https://www.oref.org.il/','X-Requested-With':'XMLHttpRequest'}};
+  var url2='https://api.tzevaadom.co.il/alerts-history';
+
+  /* Step 1: Try oref.org.il direct */
+  tryFetch(url1,hdrs).then(parseOrefHist).catch(function(){
+    /* Step 2: Try oref via CORS proxy */
+    return tryFetch(proxyUrl(url1)).then(parseOrefHist);
+  }).catch(function(){
+    /* Step 3: Try tzevaadom direct */
+    return tryFetch(url2).then(function(t){return JSON.parse(t)}).then(parseTzevaHist);
+  }).catch(function(){
+    /* Step 4: Try tzevaadom via CORS proxy */
+    return tryFetch(proxyUrl(url2)).then(function(t){return JSON.parse(t)}).then(parseTzevaHist);
+  }).catch(function(){
+    /* Step 5: All failed — use demo */
+    if(!S.history.length||S.dataSource!=='live')genDemo();
+    setC('demo');rv()
   })
+}
+
+function parseOrefHist(t){
+  t=t.replace(/^\uFEFF/,'').trim();
+  if(!t)throw new Error('empty');
+  var d=JSON.parse(t);
+  if(!Array.isArray(d)||!d.length)throw new Error('empty');
+  S.history=d;S.dataSource='live';
+  if(S.cfg.offline)sv('history',d);
+  setC('live');rv()
+}
+function parseTzevaHist(d){
+  if(!Array.isArray(d)||!d.length)throw new Error('empty');
+  S.history=d.map(function(a){return{alertDate:a.date||a.alertDate||'',title:a.title||'',data:a.cities?a.cities.join(', '):(a.data||''),category:a.category||a.cat||1}});
+  S.dataSource='live';
+  if(S.cfg.offline)sv('history',S.history);
+  setC('live');rv()
 }
 
 /* ---- FIX: Demo data uses user's city if known, or generic Israeli cities ---- */
@@ -451,7 +500,17 @@ window.triggerAlert=function(){
   }
 };
 
-function setC(v){S.conn=v;$('connDot').className='conn-dot '+(v?'live':'err');$('connLabel').textContent=v?'LIVE':(navigator.onLine?'DEMO':'OFF')}
+function setC(v){
+  S.conn=v;
+  if(v==='live'){
+    $('connDot').className='conn-dot live';$('connLabel').textContent='LIVE';
+  } else if(v==='demo'){
+    $('connDot').className='conn-dot';$('connLabel').textContent='DEMO';
+  } else {
+    $('connDot').className='conn-dot err';$('connLabel').textContent=navigator.onLine?'DEMO':'OFF';
+    if(S.dataSource!=='live')S.dataSource='demo';
+  }
+}
 
 /* ---- FIX: GPS now fetches local shelters from Overpass ---- */
 window.requestGPS=function(){
@@ -504,7 +563,15 @@ function renderShelters(){
 
 function onGPSErr(e){var m={1:'🚫 Доступ запрещён',2:'📡 Не определилось',3:'⏱ Таймаут'};$('shelterContent').innerHTML='<div class="gps-prompt"><p>'+(m[e.code]||'Ошибка')+'</p><button class="gps-btn" onclick="requestGPS()">🔄 Ещё раз</button></div>'}
 
-function rv(){renderStats();renderLog()}
+function rv(){renderStats();renderLog();renderDemoBanners()}
+function renderDemoBanners(){
+  var isDemo=S.dataSource!=='live';
+  var banner='<div class="demo-banner"><span class="demo-tag">DEMO</span>API недоступен — показаны примерные данные. Из Израиля данные будут реальными.</div>';
+  var el1=$('demoBannerStats'),el2=$('demoBannerLog'),el3=$('demoBannerHome');
+  if(el1)el1.innerHTML=isDemo?banner:'';
+  if(el2)el2.innerHTML=isDemo?banner:'';
+  if(el3)el3.innerHTML=isDemo?banner:'';
+}
 function renderStats(){
   var now=new Date(),ts=now.toISOString().slice(0,10),wa=new Date(now);wa.setDate(wa.getDate()-7);
   var td=0,wk=0,dc={},rc={};
