@@ -30,23 +30,19 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);-webkit-font
 .logo h1{font-size:20px;font-weight:800;letter-spacing:-.5px;line-height:1}
 .logo small{font-size:10px;color:var(--text2);font-family:var(--mono);letter-spacing:.8px;font-weight:500}
 
-.main{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0;display:flex;flex-direction:column}
+.main{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column}
 
-/* ---- LOCATE STATE ---- */
 .locate-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px;text-align:center}
 .locate-wrap p{font-size:15px;color:var(--text2);margin-bottom:24px;line-height:1.6}
 .locate-btn{display:inline-flex;align-items:center;gap:10px;padding:18px 40px;border-radius:60px;border:none;background:linear-gradient(135deg,var(--green),var(--green2));color:#000;font-family:var(--font);font-size:17px;font-weight:700;cursor:pointer;box-shadow:0 8px 32px rgba(0,212,170,0.3);transition:transform .15s,box-shadow .15s}
 .locate-btn:active{transform:scale(.96);box-shadow:0 4px 16px rgba(0,212,170,0.2)}
 .locate-sub{margin-top:14px;font-size:11px;color:var(--text3);line-height:1.5}
 
-/* ---- LOADING ---- */
 .loading{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px;text-align:center}
 .spinner{width:44px;height:44px;border:3px solid var(--border2);border-top-color:var(--green);border-radius:50%;animation:spin .7s linear infinite;margin-bottom:18px}
 @keyframes spin{to{transform:rotate(360deg)}}
 .loading p{font-size:14px;color:var(--text2);line-height:1.5}
-.loading .step{font-family:var(--mono);font-size:11px;color:var(--text3);margin-top:8px}
 
-/* ---- ERROR ---- */
 .error{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px;text-align:center}
 .error .ico{font-size:44px;margin-bottom:12px}
 .error p{font-size:14px;color:var(--text2);line-height:1.6;margin-bottom:18px}
@@ -55,8 +51,15 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);-webkit-font
 
 /* ---- RESULTS ---- */
 .results{flex:1;display:flex;flex-direction:column}
+
+/* Tab bar for map sources */
+.map-tabs{display:flex;gap:0;background:var(--bg2);border-bottom:1px solid var(--border)}
+.map-tab{flex:1;padding:10px 8px;text-align:center;font-size:11px;font-weight:700;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;letter-spacing:.3px}
+.map-tab.on{color:var(--green);border-bottom-color:var(--green)}
+.map-tab:active{background:var(--bg3)}
+
 .map-wrap{position:relative;background:#111;flex-shrink:0}
-.map-wrap iframe{width:100%;height:45vh;min-height:280px;border:none;display:block}
+.map-wrap iframe{width:100%;height:48vh;min-height:300px;border:none;display:block}
 .map-overlay{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(11,14,20,0.95));padding:20px 16px 14px;pointer-events:none}
 .map-overlay h2{font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:4px}
 .map-overlay .city{font-size:18px;font-weight:800}
@@ -69,23 +72,18 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);-webkit-font
 
 .sh{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;margin-bottom:8px;cursor:pointer;transition:all .12s;display:flex;align-items:center;gap:14px}
 .sh:active{background:var(--card2);transform:scale(.99)}
-.sh.top{border-color:rgba(0,212,170,0.3);background:linear-gradient(135deg,rgba(0,212,170,0.05),transparent)}
 .sh-ico{width:44px;height:44px;border-radius:12px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
-.sh.top .sh-ico{background:var(--green-g)}
 .sh-body{flex:1;min-width:0}
-.sh-name{font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.sh-type{font-size:11px;color:var(--text2);margin-top:1px}
-.sh-walk{font-size:12px;margin-top:4px;color:var(--green);font-weight:600}
-.sh-dist{font-family:var(--mono);font-size:15px;font-weight:600;text-align:right;flex-shrink:0}
-.sh-dist.close{color:var(--green)}.sh-dist.mid{color:var(--orange)}.sh-dist.far{color:var(--red)}
-.sh-dist small{display:block;font-size:9px;color:var(--text3);font-weight:500;margin-top:1px}
+.sh-name{font-size:14px;font-weight:700}
+.sh-sub{font-size:11px;color:var(--text2);margin-top:2px}
+.sh-go{font-size:12px;margin-top:4px;color:var(--green);font-weight:600}
 
-.foot{text-align:center;padding:10px;font-size:10px;color:var(--text3);line-height:1.6}
+.foot{text-align:center;padding:12px;font-size:10px;color:var(--text3);line-height:1.6}
 
 @media(max-width:400px){
   .hdr{padding:10px 14px 8px;padding-top:calc(10px + var(--safe-t))}
   .logo h1{font-size:18px}
-  .map-wrap iframe{height:40vh;min-height:240px}
+  .map-wrap iframe{height:42vh;min-height:260px}
   .sh{padding:12px 14px;gap:10px}
   .sh-ico{width:38px;height:38px;font-size:17px;border-radius:10px}
   .sh-name{font-size:13px}
@@ -102,104 +100,27 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);-webkit-font
   </div>
   <div class="main" id="main">
     <div class="locate-wrap">
-      <p>Покажем ближайшие укрытия<br>и маршрут до каждого</p>
+      <p>Покажем ближайшие укрытия<br>на официальной карте Израиля</p>
       <button class="locate-btn" onclick="go()">📍 Найти укрытия</button>
-      <div class="locate-sub">Используем Google Maps — показывает<br>миклаты, парковки, общественные здания</div>
+      <div class="locate-sub">Данные: GovMap (Пикуд ха-Ореф) + Google Maps</div>
     </div>
   </div>
 </div>
 
 <script>
 (function(){
-var S={lat:null,lng:null,city:''};
+var S={lat:null,lng:null,city:'',tab:'govmap'};
 var M=document.getElementById('main');
 
-function hav(a,b,c,d){
-  var R=6371e3,r=Math.PI/180,x=(c-a)*r,y=(d-b)*r;
-  var h=Math.sin(x/2)*Math.sin(x/2)+Math.cos(a*r)*Math.cos(c*r)*Math.sin(y/2)*Math.sin(y/2);
-  return R*2*Math.atan2(Math.sqrt(h),Math.sqrt(1-h));
-}
-function wt(m){var s=Math.round(m/1.39);return s<90?s+' сек':Math.round(s/60)+' мин'}
-function dc(m){return m<200?'close':m<500?'mid':'far'}
-
-/* ========== UI STATES ========== */
-function showLoad(msg,step){
-  M.innerHTML='<div class="loading"><div class="spinner"></div><p>'+msg+'</p>'+(step?'<div class="step">'+step+'</div>':'')+'</div>';
+/* ---- UI helpers ---- */
+function showLoad(msg){
+  M.innerHTML='<div class="loading"><div class="spinner"></div><p>'+msg+'</p></div>';
 }
 function showErr(msg){
   M.innerHTML='<div class="error"><div class="ico">😕</div><p>'+msg+'</p><button class="retry-btn" onclick="go()">🔄 Попробовать снова</button></div>';
 }
 
-/* ========== OVERPASS — best effort enrichment ========== */
-var OVP=['https://overpass-api.de/api/interpreter','https://overpass.kumi.systems/api/interpreter','https://maps.mail.ru/osm/tools/overpass/api/interpreter'];
-
-function ovpQuery(lat,lng,rad){
-  return '[out:json][timeout:12];('
-    +'nwr["amenity"="shelter"](around:'+rad+','+lat+','+lng+');'
-    +'nwr["building"="bunker"](around:'+rad+','+lat+','+lng+');'
-    +'nwr["bunker_type"](around:'+rad+','+lat+','+lng+');'
-    +'nwr["shelter_type"](around:'+rad+','+lat+','+lng+');'
-    +'nwr["name"~"מקלט|מיגון|ממד",i](around:'+rad+','+lat+','+lng+');'
-    +'nwr["amenity"~"hospital|school|community_centre"](around:'+rad+','+lat+','+lng+');'
-    +'nwr["building"~"public|civic"](around:'+rad+','+lat+','+lng+');'
-    +'nwr["parking"="underground"](around:'+rad+','+lat+','+lng+');'
-    +');out center body;';
-}
-
-function tryOvp(q,i){
-  if(i>=OVP.length)return Promise.resolve([]);
-  return fetch(OVP[i]+'?data='+encodeURIComponent(q),{cache:'no-store'})
-    .then(function(r){if(!r.ok)throw 0;return r.json()})
-    .then(function(d){return(d&&d.elements)?d.elements:[]})
-    .catch(function(){return tryOvp(q,i+1)});
-}
-
-function sIcon(tags){
-  if(!tags)return'🏠';
-  var n=((tags.name||'')+(tags.amenity||'')+(tags.building||'')).toLowerCase();
-  if(/בית.חולים|hospital/.test(n))return'🏥';
-  if(/בית.ספר|school/.test(n))return'🏫';
-  if(/תחנ|station/.test(n))return'🚉';
-  if(/קניון|mall|commercial/.test(n))return'🏢';
-  if(/מקלט|מיגון|ממד|shelter|bunker/.test(n))return'🛡️';
-  if(/כנסי|synagog|mosque|מסגד|church/.test(n))return'⛪';
-  if(/מרכז|community|מתנ/.test(n))return'🏛️';
-  if(/חניון|parking/.test(n))return'🅿️';
-  return'🏠';
-}
-function sType(tags){
-  if(!tags)return'Укрытие';
-  var n=(tags.name||'');
-  if(/ממד/.test(n))return'Мамад';
-  if(/מקלט/.test(n))return'Миклат';
-  if(/מיגון/.test(n))return'Защищённое пространство';
-  if(tags.amenity==='shelter')return'Убежище';
-  if(tags.building==='bunker')return'Бункер';
-  if(tags.amenity==='hospital')return'Больница';
-  if(tags.amenity==='school')return'Школа';
-  if(tags.amenity==='community_centre')return'Общественный центр';
-  if(tags.parking==='underground')return'Подземная парковка';
-  return(tags.amenity||tags.building||'Укрытие').replace(/_/g,' ');
-}
-function sName(tags){
-  if(!tags)return'Укрытие';
-  return tags['name:ru']||tags['name:en']||tags.name||sType(tags);
-}
-
-function parseOvp(els){
-  var sh=[],seen={};
-  els.forEach(function(el){
-    var lat=el.lat||(el.center&&el.center.lat);
-    var lng=el.lon||(el.center&&el.center.lon);
-    if(!lat||!lng)return;
-    var k=lat.toFixed(4)+','+lng.toFixed(4);
-    if(seen[k])return;seen[k]=true;
-    sh.push({name:sName(el.tags),type:sType(el.tags),lat:lat,lng:lng,icon:sIcon(el.tags)});
-  });
-  return sh;
-}
-
-/* ========== REVERSE GEOCODE ========== */
+/* ---- Reverse geocode ---- */
 function revGeo(lat,lng,cb){
   fetch('https://nominatim.openstreetmap.org/reverse?format=json&lat='+lat+'&lon='+lng+'&zoom=14&accept-language=ru')
     .then(function(r){return r.json()})
@@ -207,82 +128,110 @@ function revGeo(lat,lng,cb){
     .catch(function(){cb('')});
 }
 
-/* ========== RENDER ========== */
-function render(shelters){
-  var sorted=shelters.map(function(s){
-    return{name:s.name,type:s.type,lat:s.lat,lng:s.lng,icon:s.icon,dist:Math.round(hav(S.lat,S.lng,s.lat,s.lng))};
-  }).sort(function(a,b){return a.dist-b.dist});
+/* ---- ITM projection (WGS84 → Israel Transverse Mercator for GovMap) ---- */
+function wgs84ToItm(lat,lng){
+  /* Simplified ITM conversion — good enough for map centering */
+  var a=6378137,f=1/298.257223563,k0=1.0000067,lam0=35.2045169*Math.PI/180;
+  var phi=lat*Math.PI/180,lam=lng*Math.PI/180;
+  var e2=2*f-f*f,e=Math.sqrt(e2);
+  var N=a/Math.sqrt(1-e2*Math.sin(phi)*Math.sin(phi));
+  var T=Math.tan(phi)*Math.tan(phi);
+  var C=e2/(1-e2)*Math.cos(phi)*Math.cos(phi);
+  var A=(lam-lam0)*Math.cos(phi);
+  var e4=e2*e2,e6=e4*e2;
+  var M0=a*((1-e2/4-3*e4/64-5*e6/256)*phi-(3*e2/8+3*e4/32+45*e6/1024)*Math.sin(2*phi)+(15*e4/256+45*e6/1024)*Math.sin(4*phi)-(35*e6/3072)*Math.sin(6*phi));
+  var x=k0*(N*(A+A*A*A*(1-T+C)/6+A*A*A*A*A*(5-18*T+T*T)/120))+219529.584;
+  var y=k0*(M0+N*Math.tan(phi)*(A*A/2+A*A*A*A*(5-T+9*C)/24+A*A*A*A*A*A*(61-58*T+T*T)/720))+626907.39;
+  /* GovMap uses extent coords: x ≈ easting, y ≈ northing */
+  return{x:Math.round(x),y:Math.round(y)};
+}
 
+/* ---- Build map URLs ---- */
+function govmapUrl(lat,lng){
+  var itm=wgs84ToItm(lat,lng);
+  var dx=2000,dy=1500;
+  var ext=(itm.x-dx)+','+(itm.y-dy)+','+(itm.x+dx)+','+(itm.y+dy);
+  return 'https://www.govmap.gov.il/?lay=417&extent='+ext+'&zoom=5000';
+}
+
+function gmapsSearchUrl(lat,lng,query){
+  return 'https://www.google.com/maps/search/'+encodeURIComponent(query)+'/@'+lat+','+lng+',16z';
+}
+
+function gmapsEmbedUrl(lat,lng){
+  return 'https://maps.google.com/maps?q='+encodeURIComponent('מקלט')+'&ll='+lat+','+lng+'&z=16&output=embed';
+}
+
+/* ---- Render results ---- */
+function render(){
   var h='<div class="results">';
 
-  /* Google Maps embed — searching for מקלט (shelter) near user's coordinates */
-  var gmUrl='https://www.google.com/maps/embed/v1/search?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=מקלט&center='+S.lat+','+S.lng+'&zoom=15&language=he';
-  /* Fallback: simple embed without API key */
-  var embedUrl='https://maps.google.com/maps?q=מקלט&ll='+S.lat+','+S.lng+'&z=15&output=embed';
+  /* Tab bar */
+  h+='<div class="map-tabs">';
+  h+='<div class="map-tab'+(S.tab==='govmap'?' on':'')+'" onclick="setTab(\'govmap\')">🛡️ GovMap · Миклаты</div>';
+  h+='<div class="map-tab'+(S.tab==='google'?' on':'')+'" onclick="setTab(\'google\')">🗺️ Google Maps</div>';
+  h+='</div>';
 
-  h+='<div class="map-wrap">';
-  h+='<iframe id="gmap" src="'+embedUrl+'" loading="lazy" referrerpolicy="no-referrer"></iframe>';
-  h+='<div class="map-overlay"><h2>Укрытия рядом</h2><div class="city">'+(S.city||S.lat.toFixed(4)+', '+S.lng.toFixed(4))+'</div></div>';
-  h+='<div class="map-actions">';
-  h+='<button class="map-act" onclick="go()">🔄 Обновить</button>';
-  h+='<button class="map-act" onclick="openFull()">↗ Карта</button>';
-  h+='</div></div>';
-
-  /* List */
-  h+='<div class="list">';
-
-  if(sorted.length>0){
-    h+='<div class="list-hdr">Найдено через OpenStreetMap: '+sorted.length+'</div>';
-    var cnt=Math.min(sorted.length,15);
-    for(var i=0;i<cnt;i++){
-      var s=sorted[i],d=dc(s.dist);
-      var url='https://www.google.com/maps/dir/?api=1&origin='+S.lat+','+S.lng+'&destination='+s.lat+','+s.lng+'&travelmode=walking';
-      h+='<div class="sh'+(i===0?' top':'')+'" onclick="window.open(\''+url+'\',\'_blank\')">';
-      h+='<div class="sh-ico">'+s.icon+'</div>';
-      h+='<div class="sh-body">';
-      h+='<div class="sh-name">'+s.name+'</div>';
-      h+='<div class="sh-type">'+s.type+'</div>';
-      h+='<div class="sh-walk">🚶 '+wt(s.dist)+' → маршрут</div>';
-      h+='</div>';
-      h+='<div class="sh-dist '+d+'">'+s.dist+'<small>м</small></div>';
-      h+='</div>';
-    }
+  /* Map */
+  var iframeSrc;
+  if(S.tab==='govmap'){
+    iframeSrc=govmapUrl(S.lat,S.lng);
   } else {
-    h+='<div class="list-hdr">OSM не нашёл тегированных укрытий поблизости</div>';
+    iframeSrc=gmapsEmbedUrl(S.lat,S.lng);
   }
 
-  /* Always show direct Google Maps links as backup */
-  h+='<div style="padding:10px 0 6px"><div class="list-hdr">Искать на Google Maps</div></div>';
+  h+='<div class="map-wrap">';
+  h+='<iframe src="'+iframeSrc+'" loading="lazy" referrerpolicy="no-referrer" allow="geolocation"></iframe>';
+  h+='<div class="map-overlay"><h2>'+(S.tab==='govmap'?'Официальная карта миклатов':'Google Maps · מקלט')+'</h2><div class="city">'+(S.city||S.lat.toFixed(4)+', '+S.lng.toFixed(4))+'</div></div>';
+  h+='<div class="map-actions">';
+  h+='<button class="map-act" onclick="go()">🔄</button>';
+  if(S.tab==='govmap'){
+    h+='<button class="map-act" onclick="window.open(\''+govmapUrl(S.lat,S.lng)+'\',\'_blank\')">↗ GovMap</button>';
+  } else {
+    h+='<button class="map-act" onclick="window.open(\''+gmapsSearchUrl(S.lat,S.lng,'מקלט')+'\',\'_blank\')">↗ Google</button>';
+  }
+  h+='</div></div>';
 
-  var gLinks=[
-    {q:'מקלט',label:'🛡️ Миклат (убежище)',desc:'Общественные убежища'},
-    {q:'חניון תת קרקעי',label:'🅿️ Подземная парковка',desc:'Используется как укрытие'},
-    {q:'מרכז קהילתי',label:'🏛️ Общественный центр',desc:'Часто с укрытием'},
-    {q:'בית חולים',label:'🏥 Больница',desc:'Есть защищённые зоны'}
+  /* Quick search links */
+  h+='<div class="list">';
+  h+='<div class="list-hdr">Искать рядом со мной</div>';
+
+  var links=[
+    {q:'מקלט',icon:'🛡️',label:'Миклат (убежище)',desc:'Общественные убежища Пикуд ха-Ореф'},
+    {q:'חניון תת קרקעי',icon:'🅿️',label:'Подземная парковка',desc:'Может служить укрытием'},
+    {q:'מרכז קהילתי',icon:'🏛️',label:'Общественный центр',desc:'Часто есть защищённое пространство'},
+    {q:'בית חולים',icon:'🏥',label:'Больница',desc:'Есть защищённые этажи'}
   ];
-  gLinks.forEach(function(g){
-    var u='https://www.google.com/maps/search/'+encodeURIComponent(g.q)+'/@'+S.lat+','+S.lng+',15z';
+  links.forEach(function(l){
+    var u=gmapsSearchUrl(S.lat,S.lng,l.q);
     h+='<div class="sh" onclick="window.open(\''+u+'\',\'_blank\')">';
-    h+='<div class="sh-ico" style="font-size:16px">🔍</div>';
+    h+='<div class="sh-ico">'+l.icon+'</div>';
     h+='<div class="sh-body">';
-    h+='<div class="sh-name">'+g.label+'</div>';
-    h+='<div class="sh-type">'+g.desc+'</div>';
-    h+='<div class="sh-walk" style="color:var(--blue)">Открыть в Google Maps →</div>';
+    h+='<div class="sh-name">'+l.label+'</div>';
+    h+='<div class="sh-sub">'+l.desc+'</div>';
+    h+='<div class="sh-go">Открыть в Google Maps →</div>';
     h+='</div></div>';
   });
 
-  h+='<div class="foot">Карта: Google Maps · Данные: OpenStreetMap<br>⚠️ Не заменяет приложение Пикуд ха-Ореф<br>💡 Тап на карте покажет миклаты от Google</div>';
+  /* GovMap direct link */
+  h+='<div class="sh" onclick="window.open(\''+govmapUrl(S.lat,S.lng)+'\',\'_blank\')">';
+  h+='<div class="sh-ico">🗺️</div>';
+  h+='<div class="sh-body">';
+  h+='<div class="sh-name">GovMap — все миклаты</div>';
+  h+='<div class="sh-sub">Официальная карта Пикуд ха-Ореф (lay=417)</div>';
+  h+='<div class="sh-go">Открыть GovMap →</div>';
+  h+='</div></div>';
+
+  h+='<div class="foot">Карта миклатов: <a href="https://www.govmap.gov.il/?lay=417" target="_blank" style="color:var(--text2)">GovMap</a> (Пикуд ха-Ореф)<br>⚠️ Не заменяет официальное приложение</div>';
   h+='</div></div>';
 
   M.innerHTML=h;
 }
 
-/* ========== OPEN FULL GOOGLE MAPS ========== */
-window.openFull=function(){
-  window.open('https://www.google.com/maps/search/מקלט/@'+S.lat+','+S.lng+',15z','_blank');
-};
+/* ---- Tab switch ---- */
+window.setTab=function(t){S.tab=t;render()};
 
-/* ========== MAIN FLOW ========== */
+/* ---- Main ---- */
 window.go=function(){
   if(!navigator.geolocation){showErr('GPS недоступен');return}
   showLoad('Определяю координаты...');
@@ -290,25 +239,11 @@ window.go=function(){
   navigator.geolocation.getCurrentPosition(function(pos){
     S.lat=pos.coords.latitude;
     S.lng=pos.coords.longitude;
-    showLoad('Ищу укрытия...','📍 '+S.lat.toFixed(4)+', '+S.lng.toFixed(4));
-
+    showLoad('Загружаю карту...');
     revGeo(S.lat,S.lng,function(c){
       S.city=c;
-      /* Don't wait for Overpass — render immediately with Google Maps, then enrich */
-      render([]);
-
-      /* Background: try Overpass for enrichment data */
-      tryOvp(ovpQuery(S.lat,S.lng,2000),0).then(function(els){
-        var sh=parseOvp(els);
-        if(sh.length===0){
-          return tryOvp(ovpQuery(S.lat,S.lng,5000),0).then(parseOvp);
-        }
-        return sh;
-      }).then(function(sh){
-        if(sh.length>0)render(sh);
-      });
+      render();
     });
-
   },function(e){
     var m={1:'Доступ запрещён.<br>Разреши геолокацию в настройках.',2:'Не удалось определить место.',3:'Таймаут — попробуй снова.'};
     showErr(m[e.code]||'Ошибка GPS');
