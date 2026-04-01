@@ -23,7 +23,7 @@ html,body{height:100%;overflow:hidden}
 body{background:var(--bg);color:var(--text);font-family:var(--font);-webkit-font-smoothing:antialiased}
 .app{height:100%;max-width:500px;margin:0 auto;display:flex;flex-direction:column;background:var(--bg)}
 
-.hdr{padding:12px 18px 10px;padding-top:calc(12px + var(--safe-t));background:var(--bg2);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
+.hdr{padding:12px 18px 10px;padding-top:calc(12px + var(--safe-t));background:var(--bg2);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-shrink:0;z-index:10}
 .logo{display:flex;align-items:center;gap:10px}
 .logo-mark{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--green),var(--blue));display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 4px 14px rgba(0,212,170,0.2)}
 .logo h1{font-size:18px;font-weight:800;letter-spacing:-.4px;line-height:1}
@@ -33,29 +33,29 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);-webkit-font
 
 .main{flex:1;overflow:hidden;display:flex;flex-direction:column}
 
+/* locate screen */
 .locate{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px;text-align:center}
 .locate p{font-size:15px;color:var(--text2);margin-bottom:24px;line-height:1.6}
 .go-btn{display:inline-flex;align-items:center;gap:10px;padding:18px 40px;border-radius:60px;border:none;background:linear-gradient(135deg,var(--green),var(--green2));color:#000;font-family:var(--font);font-size:17px;font-weight:700;cursor:pointer;box-shadow:0 8px 32px rgba(0,212,170,0.3);transition:transform .15s}
 .go-btn:active{transform:scale(.96)}
 .locate .sub{margin-top:14px;font-size:11px;color:var(--text3);line-height:1.5}
 
+/* loading */
 .ld{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px;text-align:center}
 .sp{width:44px;height:44px;border:3px solid var(--border2);border-top-color:var(--green);border-radius:50%;animation:spin .7s linear infinite;margin-bottom:16px}
 @keyframes spin{to{transform:rotate(360deg)}}
 .ld p{font-size:14px;color:var(--text2)}
 
+/* error */
 .err{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px;text-align:center}
 .err .ei{font-size:44px;margin-bottom:10px}
 .err p{font-size:14px;color:var(--text2);line-height:1.6;margin-bottom:16px}
 .err button{padding:12px 28px;border-radius:14px;border:1px solid var(--border2);background:var(--bg3);color:var(--text);font-family:var(--font);font-size:14px;font-weight:600;cursor:pointer}
 
-.map-area{flex-shrink:0;position:relative;background:#111}
-.map-area iframe{width:100%;height:50vh;min-height:280px;border:none;display:block}
-.map-badge{position:absolute;top:10px;left:10px;background:rgba(11,14,20,0.88);backdrop-filter:blur(8px);border:1px solid var(--border2);border-radius:10px;padding:7px 12px;font-size:11px;color:var(--text2);font-weight:600;display:flex;align-items:center;gap:6px;max-width:calc(100% - 100px);overflow:hidden}
-.map-badge .dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 6px rgba(0,212,170,0.6);flex-shrink:0}
-.map-ext{position:absolute;top:10px;right:10px;padding:7px 12px;border-radius:10px;background:rgba(11,14,20,0.88);backdrop-filter:blur(8px);border:1px solid var(--border2);color:var(--text);font-family:var(--font);font-size:11px;font-weight:600;cursor:pointer;text-decoration:none}
-.map-grad{position:absolute;bottom:0;left:0;right:0;height:40px;background:linear-gradient(transparent,var(--bg));pointer-events:none}
+/* map */
+#mapCanvas{width:100%;height:50vh;min-height:280px;flex-shrink:0}
 
+/* list */
 .list{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:10px 14px calc(16px + var(--safe-b))}
 .list::-webkit-scrollbar{width:3px}
 .list::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
@@ -64,11 +64,14 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);-webkit-font
 .sh{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:13px 14px;margin-bottom:7px;cursor:pointer;transition:all .12s;display:flex;align-items:center;gap:12px}
 .sh:active{background:var(--card2);transform:scale(.99)}
 .sh.top{border-color:rgba(0,212,170,0.3);background:linear-gradient(135deg,rgba(0,212,170,0.05),transparent)}
+.sh-l{flex:1;min-width:0}
 .sh-n{font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .sh-n .badge{font-size:8px;font-weight:800;color:#000;background:var(--green);padding:2px 6px;border-radius:4px;letter-spacing:.5px}
-.sh-n .badge-gov{font-size:8px;font-weight:800;color:#000;background:var(--orange);padding:2px 6px;border-radius:4px;letter-spacing:.5px}
-.sh-d{font-size:11px;color:var(--text2);margin-top:2px}
+.sh-d{font-size:11px;color:var(--text2);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sh-go{font-size:12px;color:var(--green);font-weight:600;margin-top:4px}
+.sh-m{font-family:var(--mono);font-size:15px;font-weight:600;text-align:right;flex-shrink:0;min-width:48px}
+.sh-m.c{color:var(--green)}.sh-m.m{color:var(--orange)}.sh-m.f{color:var(--red)}
+.sh-m small{display:block;font-size:9px;color:var(--text3);font-weight:500}
 
 .foot{text-align:center;padding:10px;font-size:9px;color:var(--text3);line-height:1.5}
 .foot a{color:var(--text2);text-decoration:none}
@@ -76,7 +79,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);-webkit-font
 @media(max-width:400px){
   .hdr{padding:10px 14px 8px;padding-top:calc(10px + var(--safe-t))}
   .logo h1{font-size:17px}
-  .map-area iframe{height:44vh;min-height:250px}
+  #mapCanvas{height:44vh;min-height:250px}
   .sh{padding:11px 12px;gap:10px}
   .sh-n{font-size:13px}
 }
@@ -93,90 +96,195 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);-webkit-font
   </div>
   <div class="main" id="main">
     <div class="locate">
-      <p>Покажем укрытия рядом с тобой<br>на карте с маршрутами</p>
+      <p>Найдём ближайшие укрытия<br>и проложим маршрут до каждого</p>
       <button class="go-btn" onclick="go()">📍 Найти укрытия</button>
-      <div class="sub">Google Maps + GovMap (Пикуд ха-Ореф)</div>
+      <div class="sub">Google Maps + Places API</div>
     </div>
   </div>
 </div>
 
 <script>
 (function(){
-var S={lat:null,lng:null,city:''};
+var API_KEY='AIzaSyC9OxI3nTbFaT0JGqvhHDt3xaaAZfNl-Cs';
+var S={lat:null,lng:null,city:'',places:[],map:null};
 var M=document.getElementById('main');
 
 function showLoad(msg){M.innerHTML='<div class="ld"><div class="sp"></div><p>'+msg+'</p></div>'}
 function showErr(msg){M.innerHTML='<div class="err"><div class="ei">😕</div><p>'+msg+'</p><button onclick="go()">🔄 Ещё раз</button></div>'}
 
-function revGeo(lat,lng,cb){
-  fetch('https://nominatim.openstreetmap.org/reverse?format=json&lat='+lat+'&lon='+lng+'&zoom=14&accept-language=ru')
-    .then(function(r){return r.json()})
-    .then(function(d){cb(d.address&&(d.address.city||d.address.town||d.address.village||d.address.suburb)||'')})
-    .catch(function(){cb('')});
+function hav(a,b,c,d){
+  var R=6371e3,r=Math.PI/180,x=(c-a)*r,y=(d-b)*r;
+  var h=Math.sin(x/2)*Math.sin(x/2)+Math.cos(a*r)*Math.cos(c*r)*Math.sin(y/2)*Math.sin(y/2);
+  return R*2*Math.atan2(Math.sqrt(h),Math.sqrt(1-h));
+}
+function wt(m){var s=Math.round(m/1.39);return s<90?s+' сек':Math.round(s/60)+' мин'}
+function dc(m){return m<200?'c':m<500?'m':'f'}
+
+function routeUrl(place){
+  var dlat=place.lat,dlng=place.lng;
+  return 'https://www.google.com/maps/dir/?api=1&origin='+S.lat+','+S.lng+'&destination='+dlat+','+dlng+'&travelmode=walking';
 }
 
-function render(){
+/* ===== Load Google Maps JS API ===== */
+function loadGMaps(cb){
+  if(window.google&&window.google.maps){cb();return}
+  var s=document.createElement('script');
+  s.src='https://maps.googleapis.com/maps/api/js?key='+API_KEY+'&libraries=places&callback=_gmCb';
+  s.async=true;s.defer=true;
+  window._gmCb=function(){cb()};
+  s.onerror=function(){showErr('Не удалось загрузить Google Maps')};
+  document.head.appendChild(s);
+}
+
+/* ===== Build map + search ===== */
+function buildMap(){
+  /* Render layout */
+  M.innerHTML='<div id="mapCanvas"></div><div class="list" id="shelterList"><div class="ld" style="padding:20px"><div class="sp"></div><p>Ищу укрытия рядом...</p></div></div>';
   document.getElementById('refreshBtn').style.display='flex';
 
-  /* Google Maps embed — search מקלט centered on user at zoom 16 */
-  var embedUrl='https://maps.google.com/maps?q='+encodeURIComponent('מקלט')+'+near+'+S.lat+','+S.lng+'&ll='+S.lat+','+S.lng+'&z=16&output=embed';
+  var center={lat:S.lat,lng:S.lng};
 
-  /* Google Maps full search URL */
-  var gFullUrl='https://www.google.com/maps/search/'+encodeURIComponent('מקלט')+'/@'+S.lat+','+S.lng+',16z';
-
-  /* GovMap external link (user opens in browser — works properly outside iframe) */
-  var govUrl='https://www.govmap.gov.il/?lay=417&c='+S.lat+','+S.lng+'&z=7&b=0';
-
-  var h='';
-
-  /* === MAP — Google Maps embed with מקלט search === */
-  h+='<div class="map-area">';
-  h+='<iframe src="'+embedUrl+'" loading="lazy" referrerpolicy="no-referrer"></iframe>';
-  h+='<div class="map-badge"><div class="dot"></div>מקלט'+(S.city?' · '+S.city:'')+'</div>';
-  h+='<a class="map-ext" href="'+gFullUrl+'" target="_blank">↗ Карта</a>';
-  h+='<div class="map-grad"></div>';
-  h+='</div>';
-
-  /* === LIST === */
-  h+='<div class="list">';
-  h+='<div class="list-hdr">Маршруты · нажми для навигации</div>';
-
-  /* Main: מקלט search in Google Maps */
-  h+='<div class="sh top" onclick="window.open(\''+gFullUrl+'\',\'_blank\')">';
-  h+='<div style="flex:1">';
-  h+='<div class="sh-n">🛡️ Миклаты рядом <span class="badge">МАРШРУТЫ</span></div>';
-  h+='<div class="sh-d">Google Maps покажет ближайшие с навигацией</div>';
-  h+='<div class="sh-go">Открыть →</div>';
-  h+='</div></div>';
-
-  /* GovMap — official Pikud HaOref shelters */
-  h+='<div class="sh" onclick="window.open(\''+govUrl+'\',\'_blank\')">';
-  h+='<div style="flex:1">';
-  h+='<div class="sh-n">🗺️ GovMap — все миклаты <span class="badge-gov">ОФИЦИАЛЬНЫЕ</span></div>';
-  h+='<div class="sh-d">Карта Пикуд ха-Ореф, слой 417</div>';
-  h+='<div class="sh-go">Открыть GovMap →</div>';
-  h+='</div></div>';
-
-  /* Additional searches */
-  var links=[
-    {q:'חניון תת קרקעי',icon:'🅿️',name:'Подземные парковки',desc:'Могут служить укрытием'},
-    {q:'מרכז קהילתי',icon:'🏛️',name:'Общественные центры',desc:'Часто есть защищённое пространство'},
-    {q:'בית חולים',icon:'🏥',name:'Больницы',desc:'Есть защищённые этажи'}
-  ];
-  links.forEach(function(l){
-    var u='https://www.google.com/maps/search/'+encodeURIComponent(l.q)+'/@'+S.lat+','+S.lng+',15z';
-    h+='<div class="sh" onclick="window.open(\''+u+'\',\'_blank\')">';
-    h+='<div style="flex:1">';
-    h+='<div class="sh-n">'+l.icon+' '+l.name+'</div>';
-    h+='<div class="sh-d">'+l.desc+'</div>';
-    h+='<div class="sh-go">Google Maps →</div>';
-    h+='</div></div>';
+  /* Create map */
+  S.map=new google.maps.Map(document.getElementById('mapCanvas'),{
+    center:center,
+    zoom:16,
+    disableDefaultUI:true,
+    zoomControl:true,
+    styles:[
+      {elementType:'geometry',stylers:[{color:'#0d1117'}]},
+      {elementType:'labels.text.fill',stylers:[{color:'#6b7a94'}]},
+      {elementType:'labels.text.stroke',stylers:[{color:'#0b0e14'}]},
+      {featureType:'road',elementType:'geometry',stylers:[{color:'#1a1f2b'}]},
+      {featureType:'road',elementType:'geometry.stroke',stylers:[{color:'#242b3a'}]},
+      {featureType:'water',elementType:'geometry',stylers:[{color:'#0e1a2b'}]},
+      {featureType:'poi',elementType:'geometry',stylers:[{color:'#151a24'}]},
+      {featureType:'poi.park',elementType:'geometry',stylers:[{color:'#0f1a14'}]}
+    ]
   });
 
-  h+='<div class="foot">Карта: Google Maps (поиск «מקלט»)<br>Официальные данные: <a href="https://www.govmap.gov.il/?lay=417" target="_blank">GovMap</a> (Пикуд ха-Ореф)<br>⚠️ Не заменяет официальное приложение</div>';
-  h+='</div>';
+  /* User marker */
+  new google.maps.Marker({
+    position:center,
+    map:S.map,
+    icon:{
+      path:google.maps.SymbolPath.CIRCLE,
+      scale:10,
+      fillColor:'#3498ff',
+      fillOpacity:1,
+      strokeColor:'#fff',
+      strokeWeight:3
+    },
+    title:'Вы здесь',
+    zIndex:100
+  });
 
-  M.innerHTML=h;
+  /* Nearby search for מקלט */
+  var service=new google.maps.places.PlacesService(S.map);
+
+  /* Search 1: מקלט (shelter) */
+  searchPlaces(service,center,'מקלט',2000,function(r1){
+    /* Search 2: מקלט ציבורי (public shelter) */
+    searchPlaces(service,center,'מקלט ציבורי',2000,function(r2){
+      /* Search 3: bomb shelter */
+      searchPlaces(service,center,'bomb shelter',2000,function(r3){
+        /* Merge & deduplicate */
+        var all=[].concat(r1||[],r2||[],r3||[]);
+        var seen={},unique=[];
+        all.forEach(function(p){
+          var key=p.lat.toFixed(4)+','+p.lng.toFixed(4);
+          if(!seen[key]){seen[key]=true;unique.push(p)}
+        });
+        /* Sort by distance */
+        unique.sort(function(a,b){return a.dist-b.dist});
+        /* Take top 10 within 2km */
+        S.places=unique.filter(function(p){return p.dist<=2000}).slice(0,10);
+        if(S.places.length===0) S.places=unique.slice(0,10); /* fallback: show whatever we found */
+        renderList();
+        addMarkers();
+      });
+    });
+  });
+}
+
+function searchPlaces(service,center,query,radius,cb){
+  service.textSearch({
+    query:query,
+    location:center,
+    radius:radius
+  },function(results,status){
+    if(status===google.maps.places.PlacesServiceStatus.OK&&results){
+      var pts=results.map(function(r){
+        var lat=r.geometry.location.lat();
+        var lng=r.geometry.location.lng();
+        return{
+          name:r.name||'מקלט',
+          addr:r.formatted_address||r.vicinity||'',
+          lat:lat,lng:lng,
+          dist:Math.round(hav(S.lat,S.lng,lat,lng))
+        };
+      });
+      cb(pts);
+    } else {
+      cb([]);
+    }
+  });
+}
+
+function addMarkers(){
+  S.places.forEach(function(p,i){
+    var marker=new google.maps.Marker({
+      position:{lat:p.lat,lng:p.lng},
+      map:S.map,
+      label:{
+        text:String(i+1),
+        color:'#000',
+        fontWeight:'800',
+        fontSize:'11px'
+      },
+      icon:{
+        path:google.maps.SymbolPath.CIRCLE,
+        scale:16,
+        fillColor:i===0?'#00d4aa':'#ffa502',
+        fillOpacity:1,
+        strokeColor:'#fff',
+        strokeWeight:2
+      },
+      title:p.name
+    });
+    marker.addListener('click',function(){
+      window.open(routeUrl(p),'_blank');
+    });
+  });
+  /* Fit bounds */
+  if(S.places.length>1){
+    var bounds=new google.maps.LatLngBounds();
+    bounds.extend({lat:S.lat,lng:S.lng});
+    S.places.forEach(function(p){bounds.extend({lat:p.lat,lng:p.lng})});
+    S.map.fitBounds(bounds,{top:10,right:10,bottom:10,left:10});
+  }
+}
+
+function renderList(){
+  var el=document.getElementById('shelterList');
+  if(!el)return;
+  if(S.places.length===0){
+    el.innerHTML='<div class="list-hdr">Ничего не найдено в радиусе 2 км</div><div class="foot">Попробуй обновить или переместись</div>';
+    return;
+  }
+  var h='<div class="list-hdr">Найдено: '+S.places.length+' · нажми → маршрут</div>';
+  S.places.forEach(function(p,i){
+    var d=dc(p.dist);
+    h+='<div class="sh'+(i===0?' top':'')+'" onclick="window.open(\''+routeUrl(p)+'\',\'_blank\')">';
+    h+='<div class="sh-l">';
+    h+='<div class="sh-n"><span>'+String(i+1)+'.</span> '+p.name+(i===0?' <span class="badge">БЛИЖАЙШЕЕ</span>':'')+'</div>';
+    if(p.addr)h+='<div class="sh-d">'+p.addr+'</div>';
+    h+='<div class="sh-go">🚶 '+wt(p.dist)+' пешком → маршрут</div>';
+    h+='</div>';
+    h+='<div class="sh-m '+d+'">'+p.dist+'<small>м</small></div>';
+    h+='</div>';
+  });
+  h+='<div class="foot">Данные: Google Maps Places API<br>⚠️ Не заменяет приложение Пикуд ха-Ореф</div>';
+  el.innerHTML=h;
 }
 
 /* ===== MAIN ===== */
@@ -187,10 +295,9 @@ window.go=function(){
   navigator.geolocation.getCurrentPosition(function(pos){
     S.lat=pos.coords.latitude;
     S.lng=pos.coords.longitude;
-    showLoad('Загружаю карту...');
-    revGeo(S.lat,S.lng,function(c){
-      S.city=c;
-      render();
+    showLoad('Загружаю Google Maps...');
+    loadGMaps(function(){
+      buildMap();
     });
   },function(e){
     var m={1:'Доступ запрещён.<br>Разреши геолокацию в настройках.',2:'Не удалось определить место.',3:'Таймаут — попробуй снова.'};
