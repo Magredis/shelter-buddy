@@ -5,604 +5,298 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#070a12">
-<title>Миклатон · Shelter Buddy</title>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#0b0e14">
+<title>Миклатон · v3</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root {
-  --red:#E63946;--red-dark:#b02830;--red-glow:rgba(230,57,70,0.25);
-  --orange:#F4801A;--yellow:#FFD166;--green:#2EC4B6;--green-glow:rgba(46,196,182,0.15);
-  --blue:#3B82F6;--bg:#070a12;--bg2:#0d1117;--bg3:#161b26;--bg4:#1e2536;
-  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);
-  --text:#e4e7f0;--text2:#6e7a93;
-  --font:'Manrope',-apple-system,sans-serif;--mono:'DM Mono','Menlo',monospace;
-  --radius:14px;--safe-top:env(safe-area-inset-top,0px);--safe-bottom:env(safe-area-inset-bottom,0px);
+:root{
+  --bg:#0b0e14;--bg2:#12161f;--bg3:#1a1f2b;--bg4:#242b3a;
+  --card:#151a24;--card2:#1c2230;
+  --border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.1);
+  --text:#e8ecf4;--text2:#6b7a94;--text3:#3d4a5f;
+  --green:#00d4aa;--green2:#00b894;--green-g:rgba(0,212,170,0.12);
+  --red:#ff4757;--red-g:rgba(255,71,87,0.1);
+  --orange:#ffa502;--blue:#3498ff;
+  --font:'Outfit',system-ui,sans-serif;--mono:'JetBrains Mono',monospace;
+  --r:16px;--safe-t:env(safe-area-inset-top,0px);--safe-b:env(safe-area-inset-bottom,0px);
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html{height:100%}
-body{background:var(--bg);color:var(--text);font-family:var(--font);height:100%;overflow:hidden;-webkit-font-smoothing:antialiased}
-.app{height:100%;max-width:480px;margin:0 auto;display:flex;flex-direction:column;background:var(--bg);box-shadow:-1px 0 0 var(--border),1px 0 0 var(--border)}
+html,body{height:100%;overflow:hidden}
+body{background:var(--bg);color:var(--text);font-family:var(--font);-webkit-font-smoothing:antialiased}
+.app{height:100%;max-width:500px;margin:0 auto;display:flex;flex-direction:column;background:var(--bg);position:relative}
 
-.offline-strip{display:none;background:var(--yellow);color:#000;text-align:center;padding:5px 12px;font-size:12px;font-weight:600;padding-top:calc(5px + var(--safe-top))}
-.offline-strip.show{display:block}
+.hdr{padding:14px 20px 12px;padding-top:calc(14px + var(--safe-t));background:var(--bg2);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.logo{display:flex;align-items:center;gap:11px}
+.logo-mark{width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,var(--green),var(--blue));display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 4px 16px rgba(0,212,170,0.2)}
+.logo h1{font-size:20px;font-weight:800;letter-spacing:-.5px;line-height:1}
+.logo small{font-size:10px;color:var(--text2);font-family:var(--mono);letter-spacing:.8px;font-weight:500}
+.status{display:flex;align-items:center;gap:6px;font-size:10px;font-family:var(--mono);color:var(--text2);padding:5px 10px;border-radius:20px;background:var(--bg3);border:1px solid var(--border)}
+.status .dot{width:6px;height:6px;border-radius:50%}
+.dot.ok{background:var(--green);box-shadow:0 0 8px rgba(0,212,170,0.5)}
+.dot.err{background:var(--red)}
+.dot.load{background:var(--orange);animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 
-.alert-banner{display:none;background:linear-gradient(135deg,#E63946,#cc1a2a);padding:14px 20px 16px;text-align:center;z-index:80}
-.alert-banner.active{display:block}
-.a-icon{font-size:24px;display:inline-block}
-.alert-banner.active .a-icon{animation:sirenSwing .8s linear infinite}
-@keyframes sirenSwing{0%{transform:rotate(-15deg)}50%{transform:rotate(15deg)}100%{transform:rotate(-15deg)}}
-.a-title{font-size:17px;font-weight:800;margin:4px 0 2px}
-.alert-banner.active .a-title{animation:titlePulse 1.8s ease-in-out infinite}
-@keyframes titlePulse{0%,100%{opacity:1}50%{opacity:.82}}
-.a-cities{font-size:12px;opacity:.85;line-height:1.4}
-.a-timer{font-family:var(--mono);font-size:36px;font-weight:500;margin-top:6px;letter-spacing:3px;text-shadow:0 2px 12px rgba(0,0,0,.3)}
+.main{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px 16px calc(20px + var(--safe-b))}
+.main::-webkit-scrollbar{width:3px}
+.main::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
 
-.header{padding:12px 16px 8px;padding-top:calc(12px + var(--safe-top));display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);background:var(--bg2)}
-.logo{display:flex;align-items:center;gap:10px}
-.logo-badge{width:34px;height:34px;background:linear-gradient(135deg,var(--red),var(--orange));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px}
-.logo-name{font-size:19px;font-weight:800;letter-spacing:-.3px}
-.logo-sub{font-size:10px;color:var(--text2);font-family:var(--mono);letter-spacing:.5px}
-.header-right{display:flex;align-items:center;gap:8px}
-.conn-pill{display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:20px;font-size:10px;font-family:var(--mono);color:var(--text2);background:var(--bg3);border:1px solid var(--border)}
-.conn-dot{width:6px;height:6px;border-radius:50%;background:var(--text2)}
-.conn-dot.live{background:var(--green);animation:blink 2.5s infinite}
-.conn-dot.err{background:var(--red)}
-@keyframes blink{0%,85%,100%{opacity:1}90%{opacity:.2}}
-.sim-btn{padding:5px 10px;border-radius:8px;border:1px solid rgba(230,57,70,.3);background:0 0;color:var(--red);font-size:11px;font-family:var(--font);font-weight:600;cursor:pointer}
-.sim-btn:active{background:rgba(230,57,70,.15)}
+.locate-wrap{text-align:center;padding:48px 20px}
+.locate-wrap p{font-size:14px;color:var(--text2);margin-bottom:20px;line-height:1.6}
+.locate-btn{display:inline-flex;align-items:center;gap:10px;padding:16px 36px;border-radius:60px;border:none;background:linear-gradient(135deg,var(--green),var(--green2));color:#000;font-family:var(--font);font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 8px 32px rgba(0,212,170,0.3);transition:transform .15s,box-shadow .15s}
+.locate-btn:active{transform:scale(.96);box-shadow:0 4px 16px rgba(0,212,170,0.2)}
+.locate-btn .ico{font-size:20px}
+.locate-sub{margin-top:12px;font-size:11px;color:var(--text3)}
 
-.status-card{margin:12px 14px 8px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;display:flex;align-items:center;gap:14px}
-.status-orb{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;transition:all .4s}
-.status-orb.safe{background:radial-gradient(circle,rgba(46,196,182,.15),transparent 70%);border:2px solid rgba(46,196,182,.4);box-shadow:0 0 20px var(--green-glow)}
-.status-orb.danger{background:radial-gradient(circle,rgba(230,57,70,.2),transparent 70%);border:2px solid rgba(230,57,70,.5);box-shadow:0 0 20px var(--red-glow);animation:dangerPulse 1.2s ease-in-out infinite}
-@keyframes dangerPulse{0%,100%{box-shadow:0 0 20px var(--red-glow)}50%{box-shadow:0 0 40px rgba(230,57,70,.4)}}
-.status-info{flex:1;min-width:0}
-.status-main{font-size:17px;font-weight:700}
-.status-sub{font-size:12px;color:var(--text2);margin-top:1px}
-.shelter-badge{text-align:center;background:var(--bg3);border:1px solid var(--border);border-radius:11px;padding:8px 14px;flex-shrink:0}
-.shelter-badge-num{font-family:var(--mono);font-size:26px;font-weight:500;color:var(--orange);line-height:1}
-.shelter-badge-lbl{font-size:9px;color:var(--text2);margin-top:2px}
-
-.tabs{display:flex;gap:3px;padding:0 14px;margin:4px 0 0}
-.tab{flex:1;padding:9px 4px 7px;text-align:center;font-size:10px;font-weight:600;border-radius:10px 10px 0 0;background:var(--bg2);border:1px solid var(--border);border-bottom:none;color:var(--text2);cursor:pointer;transition:all .15s;position:relative}
-.tab.active{background:var(--bg3);color:var(--text);border-color:var(--border2)}
-.tab.active::after{content:'';position:absolute;bottom:0;left:10%;width:80%;height:2px;background:var(--blue);border-radius:2px 2px 0 0}
-.tab-icon{font-size:16px;display:block;margin-bottom:1px}
-
-.content{flex:1;overflow-y:auto;overflow-x:hidden;padding:12px 14px;padding-bottom:calc(24px + var(--safe-bottom));-webkit-overflow-scrolling:touch;background:var(--bg3);border-top:1px solid var(--border)}
-.content::-webkit-scrollbar{width:3px}
-.content::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
-.panel{display:none}
-.panel.active{display:block}
-
-.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:10px}
-.card-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--text2);margin-bottom:10px}
-
-.stats-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
-.stat{background:var(--bg3);border-radius:10px;padding:12px 8px;text-align:center}
-.stat-n{font-family:var(--mono);font-size:26px;font-weight:500;line-height:1}
-.stat-n.r{color:var(--red)}.stat-n.y{color:var(--yellow)}.stat-n.b{color:var(--blue)}
-.stat-l{font-size:10px;color:var(--text2);margin-top:3px;font-weight:500}
-
-.bars{display:flex;flex-direction:column;gap:5px}
-.bar-r{display:flex;align-items:center;gap:6px}
-.bar-lbl{width:22px;font-size:10px;color:var(--text2);font-family:var(--mono);flex-shrink:0}
-.bar-track{flex:1;height:18px;background:var(--bg3);border-radius:3px;overflow:hidden}
-.bar-fill{height:100%;border-radius:3px;transition:width .6s ease;min-width:2px}
-.bar-fill.red{background:linear-gradient(90deg,var(--red),#ff6b6b)}
-.bar-fill.blue{background:linear-gradient(90deg,var(--blue),#60a5fa)}
-.bar-val{width:24px;font-size:10px;font-family:var(--mono);color:var(--text2);text-align:left;flex-shrink:0}
-
-.sh-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;cursor:pointer;transition:all .15s;display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}
-.sh-card:active{background:var(--bg4)}
-.sh-card.nearest{border-color:rgba(46,196,182,.35);background:rgba(46,196,182,.04)}
-.sh-info{flex:1;min-width:0}
-.sh-name{font-size:14px;font-weight:600}
-.sh-type{font-size:11px;color:var(--text2);margin-top:2px}
-.sh-walk{font-size:11px;color:var(--text);margin-top:3px}
-.sh-dist{font-family:var(--mono);font-size:13px;font-weight:500;padding:4px 10px;border-radius:8px;flex-shrink:0;white-space:nowrap}
-.sh-dist.close{color:var(--green);background:rgba(46,196,182,.1)}
-.sh-dist.mid{color:var(--yellow);background:rgba(255,209,102,.1)}
-.sh-dist.far{color:var(--orange);background:rgba(244,128,26,.1)}
-.gps-prompt{text-align:center;padding:24px 16px}
-.gps-prompt p{font-size:13px;color:var(--text2);margin-bottom:12px;line-height:1.5}
-.gps-btn{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;border-radius:10px;border:1px solid rgba(46,196,182,.4);background:rgba(46,196,182,.08);color:var(--green);font-family:var(--font);font-size:14px;font-weight:600;cursor:pointer}
-.gps-btn:active{background:rgba(46,196,182,.18)}
-
-.map-frame{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:10px}
-.map-frame iframe{width:100%;height:220px;border:none;display:block}
-.map-bar{padding:8px 12px;display:flex;justify-content:space-between;align-items:center;font-size:11px;border-top:1px solid var(--border)}
-.map-bar a{color:var(--green);text-decoration:none;font-family:var(--mono)}
-
-.qa-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.qa{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px 12px;text-align:center;cursor:pointer;transition:all .15s}
-.qa:active{background:var(--bg4);transform:scale(.98)}
-.qa.red{border-color:rgba(230,57,70,.25)}
-.qa-i{font-size:24px;margin-bottom:6px}
-.qa-t{font-size:12px;font-weight:600}
-.qa-s{font-size:10px;color:var(--text2);margin-top:2px}
-
-.log-filters{display:flex;gap:5px;margin-bottom:10px;overflow-x:auto;-webkit-overflow-scrolling:touch}
-.log-filters::-webkit-scrollbar{display:none}
-.pill{padding:5px 12px;border-radius:16px;font-size:11px;font-weight:600;background:var(--bg2);border:1px solid var(--border);color:var(--text2);cursor:pointer;white-space:nowrap;transition:all .15s;flex-shrink:0}
-.pill.on{background:var(--blue);border-color:var(--blue);color:#fff}
-.log-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
-.log-item:last-child{border-bottom:none}
-.log-dot{width:8px;height:8px;border-radius:50%;margin-top:5px;flex-shrink:0}
-.log-dot.c1{background:var(--red)}.log-dot.c2{background:var(--orange)}.log-dot.c3{background:var(--blue)}
-.log-body{flex:1;min-width:0}
-.log-title{font-size:13px;font-weight:600}
-.log-cities{font-size:11px;color:var(--text2);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.log-time{font-size:10px;font-family:var(--mono);color:var(--text2);flex-shrink:0}
-.empty{text-align:center;padding:30px 16px;color:var(--text2)}
-.empty-icon{font-size:40px;margin-bottom:8px}
-.empty p{font-size:13px;line-height:1.5}
-
-.humor{background:linear-gradient(145deg,#0d1520,#111d2d);border:1px solid rgba(59,130,246,.12);border-radius:var(--radius);padding:16px;text-align:center;margin-bottom:10px}
-.humor-big{font-size:36px;margin-bottom:4px}
-.humor-label{font-size:9px;color:var(--text2);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:4px}
-.humor-val{font-family:var(--mono);font-size:28px;font-weight:500;color:var(--yellow)}
-.humor-desc{font-size:12px;color:var(--text2);margin-top:4px;line-height:1.4}
-.humor-reward{margin-top:10px;padding:8px 12px;background:rgba(255,209,102,.08);border-radius:10px;font-size:12px;color:var(--yellow);font-weight:500}
-
-.setting{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid var(--border)}
-.setting:last-child{border-bottom:none}
-.setting-t{font-size:13px;font-weight:500}
-.setting-d{font-size:10px;color:var(--text2);margin-top:1px}
-.toggle{width:44px;height:26px;background:var(--bg4);border:1px solid var(--border2);border-radius:13px;position:relative;cursor:pointer;transition:background .25s;flex-shrink:0}
-.toggle.on{background:var(--green);border-color:var(--green)}
-.toggle::after{content:'';position:absolute;width:20px;height:20px;border-radius:50%;background:#fff;top:2px;left:2px;transition:transform .25s;box-shadow:0 1px 3px rgba(0,0,0,.3)}
-.toggle.on::after{transform:translateX(18px)}
-.info-text{font-size:12px;color:var(--text2);line-height:1.6}
-.info-text small{font-size:10px}
-.footer-note{text-align:center;font-size:10px;color:var(--text2);font-family:var(--mono);padding:8px 0}
-
-.sh-loading{text-align:center;padding:16px;color:var(--text2);font-size:12px}
-.sh-loading .spinner{display:inline-block;width:20px;height:20px;border:2px solid var(--border2);border-top-color:var(--green);border-radius:50%;animation:spin .8s linear infinite;margin-bottom:6px}
+.loading{text-align:center;padding:48px 20px}
+.spinner{width:40px;height:40px;border:3px solid var(--border2);border-top-color:var(--green);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 16px}
 @keyframes spin{to{transform:rotate(360deg)}}
-.demo-banner{background:rgba(255,209,102,.08);border:1px solid rgba(255,209,102,.2);border-radius:10px;padding:8px 12px;margin-bottom:10px;font-size:11px;color:var(--yellow);text-align:center;font-weight:500}
-.demo-banner .demo-tag{display:inline-block;background:var(--yellow);color:#000;font-size:9px;font-weight:800;padding:2px 6px;border-radius:4px;margin-right:6px;letter-spacing:.5px}
+.loading p{font-size:13px;color:var(--text2);line-height:1.5}
+.loading .step{font-family:var(--mono);font-size:11px;color:var(--text3);margin-top:6px}
+
+.error{text-align:center;padding:40px 20px}
+.error .ico{font-size:40px;margin-bottom:10px}
+.error p{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:16px}
+.retry-btn{display:inline-flex;align-items:center;gap:6px;padding:10px 24px;border-radius:12px;border:1px solid var(--border2);background:var(--bg3);color:var(--text);font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer}
+.retry-btn:active{background:var(--bg4)}
+
+.results-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.results-hdr h2{font-size:13px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:1px}
+.results-hdr .loc{font-size:11px;font-family:var(--mono);color:var(--text3)}
+.rescan{padding:6px 12px;border-radius:8px;border:1px solid var(--border2);background:var(--bg3);color:var(--text2);font-family:var(--font);font-size:11px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:4px}
+.rescan:active{background:var(--bg4)}
+
+.map-card{border-radius:var(--r);overflow:hidden;border:1px solid var(--border);margin-bottom:14px;background:var(--card)}
+.map-card iframe{width:100%;height:200px;border:none;display:block}
+.map-meta{padding:10px 14px;display:flex;justify-content:space-between;align-items:center;font-size:11px;border-top:1px solid var(--border)}
+.map-meta .coord{font-family:var(--mono);color:var(--text3)}
+.map-meta .city{color:var(--text2)}
+
+.sh{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;margin-bottom:10px;cursor:pointer;transition:all .12s;display:flex;align-items:center;gap:14px;position:relative;overflow:hidden}
+.sh:active{background:var(--card2);transform:scale(.99)}
+.sh.top{border-color:rgba(0,212,170,0.3);background:linear-gradient(135deg,rgba(0,212,170,0.04),transparent)}
+.sh.top::before{content:'БЛИЖАЙШЕЕ';position:absolute;top:0;right:0;background:var(--green);color:#000;font-size:8px;font-weight:800;letter-spacing:1px;padding:3px 10px 3px 8px;border-radius:0 0 0 8px}
+.sh-ico{width:44px;height:44px;border-radius:12px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.sh.top .sh-ico{background:var(--green-g)}
+.sh-body{flex:1;min-width:0}
+.sh-name{font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sh-type{font-size:11px;color:var(--text2);margin-top:1px}
+.sh-walk{font-size:12px;margin-top:4px;display:flex;align-items:center;gap:6px}
+.sh-walk .time{font-weight:700;color:var(--green)}
+.sh-walk .arrow{color:var(--text3)}
+.sh-dist{font-family:var(--mono);font-size:14px;font-weight:600;text-align:right;flex-shrink:0}
+.sh-dist.close{color:var(--green)}.sh-dist.mid{color:var(--orange)}.sh-dist.far{color:var(--red)}
+.sh-dist small{display:block;font-size:9px;color:var(--text3);font-weight:500;margin-top:1px}
+
+.info{text-align:center;padding:16px;font-size:10px;color:var(--text3);line-height:1.6}
+.info a{color:var(--text2);text-decoration:none}
+
+@media(max-width:400px){
+  .hdr{padding:10px 14px 8px;padding-top:calc(10px + var(--safe-t))}
+  .logo h1{font-size:18px}
+  .main{padding:12px 12px calc(16px + var(--safe-b))}
+  .locate-btn{padding:14px 28px;font-size:15px}
+  .sh{padding:12px 14px;gap:10px}
+  .sh-ico{width:38px;height:38px;font-size:17px;border-radius:10px}
+  .sh-name{font-size:13px}
+}
 </style>
 </head>
 <body>
 <div class="app">
-  <div class="offline-strip" id="offlineStrip">📡 Оффлайн — показываются последние данные</div>
-  <div class="alert-banner" id="alertBanner">
-    <div class="a-icon">🚨</div>
-    <div class="a-title" id="aTitle">Ракетная атака</div>
-    <div class="a-cities" id="aCities"></div>
-    <div class="a-timer" id="aTimer">01:30</div>
-  </div>
-  <div class="header">
+  <div class="hdr">
     <div class="logo">
-      <div class="logo-badge">🛡️</div>
-      <div><div class="logo-name">Миклатон</div><div class="logo-sub">SHELTER BUDDY v2.2</div></div>
+      <div class="logo-mark">🛡️</div>
+      <div><h1>Миклатон</h1><small>SHELTER FINDER v3.0</small></div>
     </div>
-    <div class="header-right">
-      <button class="sim-btn" onclick="triggerAlert()">⚠️ Тест</button>
-      <div class="conn-pill"><div class="conn-dot" id="connDot"></div><span id="connLabel">...</span></div>
-    </div>
+    <div class="status" id="status"><div class="dot" id="dot"></div><span id="statusTxt">—</span></div>
   </div>
-  <div class="status-card">
-    <div class="status-orb safe" id="sOrb">🛡️</div>
-    <div class="status-info"><div class="status-main" id="sMain">Всё спокойно</div><div class="status-sub" id="sSub">Нет активных тревог</div></div>
-    <div class="shelter-badge"><div class="shelter-badge-num" id="shelterTimeNum">—</div><div class="shelter-badge-lbl">сек. до<br>укрытия</div></div>
-  </div>
-  <div class="tabs">
-    <div class="tab active" data-tab="home"><span class="tab-icon">🏠</span>Главная</div>
-    <div class="tab" data-tab="stats"><span class="tab-icon">📊</span>Стата</div>
-    <div class="tab" data-tab="log"><span class="tab-icon">📋</span>Журнал</div>
-    <div class="tab" data-tab="fun"><span class="tab-icon">🏃</span>Фитнес</div>
-    <div class="tab" data-tab="settings"><span class="tab-icon">⚙️</span>Настройки</div>
-  </div>
-  <div class="content">
-    <div class="panel active" id="p-home">
-      <div id="demoBannerHome"></div>
-      <div class="card"><div class="card-title">Ближайшие укрытия</div><div id="shelterContent"><div class="gps-prompt"><p>📍 Нажми, чтобы показать ближайшие укрытия рядом с тобой</p><button class="gps-btn" onclick="requestGPS()">📍 Где я?</button></div></div></div>
-      <div class="map-frame" id="mapFrame" style="display:none"></div>
-      <div class="card"><div class="card-title">Быстрые действия</div><div class="qa-grid">
-        <div class="qa red" onclick="triggerAlert()"><div class="qa-i">🚨</div><div class="qa-t">Симуляция тревоги</div><div class="qa-s">Проверить таймер</div></div>
-        <div class="qa" onclick="requestGPS()"><div class="qa-i">📍</div><div class="qa-t">Найти укрытие</div><div class="qa-s">GPS + маршрут</div></div>
-        <div class="qa" onclick="showPanel('log')"><div class="qa-i">📋</div><div class="qa-t">Журнал тревог</div><div class="qa-s">История сирен</div></div>
-        <div class="qa" onclick="showPanel('fun')"><div class="qa-i">🏃</div><div class="qa-t">Фитнес-трекер</div><div class="qa-s">Калории от забегов</div></div>
-      </div></div>
-      <div class="card"><div class="card-title">Сводка тревог</div><div class="stats-row">
-        <div class="stat"><div class="stat-n r" id="mToday">0</div><div class="stat-l">Сегодня</div></div>
-        <div class="stat"><div class="stat-n y" id="mWeek">0</div><div class="stat-l">Неделя</div></div>
-        <div class="stat"><div class="stat-n b" id="mTotal">0</div><div class="stat-l">30 дней</div></div>
-      </div></div>
-    </div>
-    <div class="panel" id="p-stats">
-      <div id="demoBannerStats"></div>
-      <div class="card"><div class="card-title">Общая сводка</div><div class="stats-row">
-        <div class="stat"><div class="stat-n r" id="sToday">0</div><div class="stat-l">Сегодня</div></div>
-        <div class="stat"><div class="stat-n y" id="sWeek">0</div><div class="stat-l">Неделя</div></div>
-        <div class="stat"><div class="stat-n b" id="sTotal">0</div><div class="stat-l">30 дней</div></div>
-      </div></div>
-      <div class="card"><div class="card-title">Последние 7 дней</div><div class="bars" id="weekBars"></div></div>
-      <div class="card"><div class="card-title">Топ районов</div><div id="topRegions"></div></div>
-    </div>
-    <div class="panel" id="p-log">
-      <div id="demoBannerLog"></div>
-      <div class="log-filters"><div class="pill on" data-f="all">Все</div><div class="pill" data-f="1">🚀 Ракеты</div><div class="pill" data-f="2">✈️ БПЛА</div><div class="pill" data-f="3">🌍 Землетрясения</div></div>
-      <div id="logList"></div>
-    </div>
-    <div class="panel" id="p-fun">
-      <div class="humor"><div class="humor-big">🏃‍♂️</div><div class="humor-label">Шагов до укрытия сегодня</div><div class="humor-val" id="fSteps">0</div><div class="humor-desc" id="fStepsDesc">Ни одного забега. Тихий день! 🙏</div></div>
-      <div class="humor"><div class="humor-big">🔥</div><div class="humor-label">Калорий сожжено</div><div class="humor-val" id="fCals">0</div><div class="humor-reward" id="fReward">💤 Ноль забегов = ноль калорий. Ешь салат.</div></div>
-      <div class="humor"><div class="humor-big">🏆</div><div class="humor-label">Твой фитнес-ранг</div><div class="humor-val" id="fRank">—</div><div class="humor-desc" id="fRankDesc">Недостаточно данных. Вернись после тревоги.</div></div>
-      <div class="card"><div class="card-title">Личная статистика (30 дней)</div><div class="stats-row">
-        <div class="stat"><div class="stat-n y" id="fTRuns">0</div><div class="stat-l">Забегов</div></div>
-        <div class="stat"><div class="stat-n b" id="fTSteps">0</div><div class="stat-l">Шагов</div></div>
-        <div class="stat"><div class="stat-n r" id="fTCals">0</div><div class="stat-l">kcal</div></div>
-      </div></div>
-    </div>
-    <div class="panel" id="p-settings">
-      <div class="card"><div class="card-title">Настройки</div>
-        <div class="setting"><div><div class="setting-t">Оффлайн-режим</div><div class="setting-d">Данные сохраняются локально</div></div><div class="toggle on" id="tOffline" onclick="togSetting('offline',this)"></div></div>
-        <div class="setting"><div><div class="setting-t">Автообновление</div><div class="setting-d">Каждые 10 секунд</div></div><div class="toggle on" id="tRefresh" onclick="togSetting('refresh',this)"></div></div>
-        <div class="setting"><div><div class="setting-t">Сброс фитнеса</div><div class="setting-d">Обнулить забеги и калории</div></div><button class="sim-btn" onclick="resetFitness()" style="border-color:var(--orange);color:var(--orange)">🔄 Сброс</button></div>
-      </div>
-      <div class="card"><div class="card-title">Информация</div><div class="info-text">Источник: Пикуд ха-Ореф (oref.org.il)<br>Укрытия: OpenStreetMap (Overpass API)<br>Обновление: каждые 10 секунд<br>Данные кешируются для оффлайн-доступа<br><br><small>⚠️ Приложение НЕ заменяет официальное приложение Пикуд ха-Ореф!</small></div></div>
-      <div class="footer-note">Миклатон v2.2 · Shelter Buddy</div>
+  <div class="main" id="main">
+    <div class="locate-wrap">
+      <p>Найдём ближайшие укрытия<br>и покажем пешеходный маршрут</p>
+      <button class="locate-btn" onclick="doLocate()"><span class="ico">📍</span> Найти укрытия</button>
+      <div class="locate-sub">Нужен доступ к геолокации</div>
     </div>
   </div>
 </div>
+
 <script>
 (function(){
-var CATS={1:{name:'Ракеты и снаряды',emoji:'🚀',shelter:90},2:{name:'Вражеский БПЛА',emoji:'✈️',shelter:90},3:{name:'Землетрясение',emoji:'🌍',shelter:0},4:{name:'Опасные вещества',emoji:'☣️',shelter:0},5:{name:'Цунами',emoji:'🌊',shelter:0},6:{name:'Проникновение',emoji:'⚠️',shelter:0},13:{name:'Можно выходить',emoji:'✅',shelter:0}};
-var FOOD=[{c:0,t:'💤 Ноль забегов = ноль калорий. Ешь салат.'},{c:15,t:'🥒 Один огурец. Не самый большой.'},{c:30,t:'🍎 Яблоко! Заслужил.'},{c:60,t:'🥐 Рогалик! Ты это заработал.'},{c:100,t:'🍩 Пончик! (Половинку, не наглей)'},{c:150,t:'🍕 Кусок пиццы. Ты — машина!'},{c:200,t:'🍔 Целый бургер. Чемпион.'},{c:300,t:'🎂 Целый торт. Абсолютный чемпион!'}];
-var RANKS=[{n:0,r:'🛋️ Диван',d:'Недостаточно данных.'},{n:1,r:'🐢 Быстрая черепаха',d:'Добежал один раз!'},{n:3,r:'🐇 Кролик-укрытник',d:'Знаешь дорогу с закрытыми глазами.'},{n:7,r:'🦊 Лис убежища',d:'Соседи завидуют.'},{n:15,r:'🦅 Орёл миномёта',d:'Золотая медаль.'},{n:30,r:'⚡ Флэш',d:'В укрытии раньше сирены.'}];
+var S={lat:null,lng:null,city:'',shelters:[]};
+var $=function(id){return document.getElementById(id)};
 
-/* ---- STATE ---- */
-var S={history:[],active:null,timerIv:null,pollIv:null,conn:false,filter:'all',lat:null,lng:null,cityName:null,localShelters:[],runs:0,spr:95,dataSource:'unknown',cfg:{offline:true,refresh:true}};
-function $(id){return document.getElementById(id)}
-function sv(k,v){try{localStorage.setItem('mk_'+k,JSON.stringify(v))}catch(e){}}
-function ld(k){try{return JSON.parse(localStorage.getItem('mk_'+k))}catch(e){return null}}
-function hav(a,b,c,d){var R=6371e3,r=Math.PI/180,x=(c-a)*r,y=(d-b)*r,h=Math.sin(x/2)*Math.sin(x/2)+Math.cos(a*r)*Math.cos(c*r)*Math.sin(y/2)*Math.sin(y/2);return R*2*Math.atan2(Math.sqrt(h),Math.sqrt(1-h))}
+function hav(a,b,c,d){
+  var R=6371e3,r=Math.PI/180,x=(c-a)*r,y=(d-b)*r;
+  var h=Math.sin(x/2)*Math.sin(x/2)+Math.cos(a*r)*Math.cos(c*r)*Math.sin(y/2)*Math.sin(y/2);
+  return R*2*Math.atan2(Math.sqrt(h),Math.sqrt(1-h));
+}
 function wt(m){var s=Math.round(m/1.39);return s<90?s+' сек':Math.round(s/60)+' мин'}
+function dc(m){return m<200?'close':m<500?'mid':'far'}
 
-/* ---- ICON PICKER FOR SHELTER TYPE ---- */
-function shelterIcon(tags){
+function setS(type,text){$('dot').className='dot '+(type||'');$('statusTxt').textContent=text||'—'}
+
+function sIcon(tags){
   if(!tags)return'🏠';
-  var n=(tags.name||'').toLowerCase(),a=(tags.amenity||'').toLowerCase(),b=(tags.building||'').toLowerCase();
-  if(a==='hospital'||n.indexOf('בית חולים')>=0||n.indexOf('больниц')>=0)return'🏥';
-  if(a==='school'||n.indexOf('בית ספר')>=0||n.indexOf('школ')>=0)return'🏫';
-  if(b==='train_station'||a==='bus_station'||n.indexOf('תחנ')>=0)return'🚉';
-  if(a==='place_of_worship'||n.indexOf('כנסי')>=0||n.indexOf('מסגד')>=0)return'🕌';
-  if(b==='commercial'||b==='retail'||n.indexOf('קניון')>=0||n.indexOf('מרכז')>=0)return'🏢';
-  if(a==='community_centre'||n.indexOf('מרכז קהילתי')>=0)return'🏛️';
-  if(n.indexOf('מקלט')>=0||n.indexOf('מיגון')>=0||n.indexOf('shelter')>=0)return'🛡️';
+  var n=((tags.name||'')+(tags.amenity||'')+(tags.building||'')).toLowerCase();
+  if(n.indexOf('בית חולים')>=0||n.indexOf('hospital')>=0)return'🏥';
+  if(n.indexOf('בית ספר')>=0||n.indexOf('school')>=0)return'🏫';
+  if(n.indexOf('תחנ')>=0||n.indexOf('station')>=0)return'🚉';
+  if(n.indexOf('קניון')>=0||n.indexOf('mall')>=0||n.indexOf('commercial')>=0)return'🏢';
+  if(n.indexOf('מקלט')>=0||n.indexOf('מיגון')>=0||n.indexOf('ממד')>=0||n.indexOf('shelter')>=0||n.indexOf('bunker')>=0)return'🛡️';
+  if(n.indexOf('synagog')>=0||n.indexOf('כנסי')>=0||n.indexOf('mosque')>=0||n.indexOf('church')>=0)return'⛪';
+  if(n.indexOf('community')>=0||n.indexOf('מרכז')>=0||n.indexOf('מתנ')>=0)return'🏛️';
+  if(n.indexOf('parking')>=0||n.indexOf('חניון')>=0)return'🅿️';
   return'🏠';
 }
-function shelterType(tags){
+function sType(tags){
   if(!tags)return'Укрытие';
-  var n=(tags.name||'').toLowerCase(),a=(tags.amenity||''),d=tags.description||tags['shelter_type']||'';
-  if(d)return d;
-  if(a==='shelter')return tags['shelter_type']||'Убежище';
-  if(n.indexOf('מקלט')>=0)return'Миклат (убежище)';
+  var n=(tags.name||'').toLowerCase();
+  if(n.indexOf('ממד')>=0)return'Мамад';
+  if(n.indexOf('מקלט')>=0)return'Миклат';
   if(n.indexOf('מיגון')>=0)return'Защищённое пространство';
-  if(n.indexOf('ממד')>=0)return'Мамад (защищённая комната)';
+  if(tags.shelter_type)return tags.shelter_type;
+  if(tags.amenity==='shelter')return'Убежище';
+  if(tags.building==='bunker'||tags.bunker_type)return'Бункер';
+  if(tags.amenity==='hospital')return'Больница';
+  if(tags.amenity==='school')return'Школа';
+  if(tags.amenity==='community_centre')return'Общественный центр';
+  if(tags.building==='public'||tags.building==='civic')return'Общественное здание';
+  if(tags.parking==='underground')return'Подземная парковка';
+  var a=tags.amenity||tags.building||'';
+  if(a)return a.replace(/_/g,' ');
   return'Укрытие';
 }
-function shelterName(tags){
+function sName(tags){
   if(!tags)return'Укрытие';
-  return tags['name:ru']||tags['name:en']||tags.name||'Укрытие';
+  return tags['name:ru']||tags['name:en']||tags.name||sType(tags);
 }
 
-/* ---- FETCH SHELTERS FROM OVERPASS (OSM) ---- */
-function fetchLocalShelters(lat,lng,callback){
-  /* Search radius: 1500m. Look for shelters, bunkers, and buildings tagged as shelter */
-  var radius=1500;
-  var query='[out:json][timeout:10];('
-    +'node["amenity"="shelter"](around:'+radius+','+lat+','+lng+');'
-    +'way["amenity"="shelter"](around:'+radius+','+lat+','+lng+');'
-    +'node["bunker_type"](around:'+radius+','+lat+','+lng+');'
-    +'way["bunker_type"](around:'+radius+','+lat+','+lng+');'
-    +'node["building"="bunker"](around:'+radius+','+lat+','+lng+');'
-    +'way["building"="bunker"](around:'+radius+','+lat+','+lng+');'
-    +'node["shelter_type"](around:'+radius+','+lat+','+lng+');'
-    +'way["shelter_type"](around:'+radius+','+lat+','+lng+');'
-    /* Also search for nodes explicitly tagged as miklat */
-    +'node["name"~"מקלט|מיגון|ממד",i](around:'+radius+','+lat+','+lng+');'
-    +'way["name"~"מקלט|מיגון|ממד",i](around:'+radius+','+lat+','+lng+');'
+/* ========== OVERPASS — 3 servers ========== */
+var OVP=[
+  'https://overpass-api.de/api/interpreter',
+  'https://overpass.kumi.systems/api/interpreter',
+  'https://maps.mail.ru/osm/tools/overpass/api/interpreter'
+];
+
+function buildQ(lat,lng,rad){
+  return '[out:json][timeout:15];('
+    +'nwr["amenity"="shelter"](around:'+rad+','+lat+','+lng+');'
+    +'nwr["building"="bunker"](around:'+rad+','+lat+','+lng+');'
+    +'nwr["bunker_type"](around:'+rad+','+lat+','+lng+');'
+    +'nwr["shelter_type"](around:'+rad+','+lat+','+lng+');'
+    +'nwr["name"~"מקלט|מיגון|ממד",i](around:'+rad+','+lat+','+lng+');'
+    +'nwr["amenity"~"hospital|school|community_centre"](around:'+rad+','+lat+','+lng+');'
+    +'nwr["building"~"public|civic"](around:'+rad+','+lat+','+lng+');'
+    +'nwr["parking"="underground"](around:'+rad+','+lat+','+lng+');'
     +');out center body;';
-  var url='https://overpass-api.de/api/interpreter?data='+encodeURIComponent(query);
-  fetch(url,{cache:'no-store'}).then(function(r){return r.json()}).then(function(data){
-    if(!data||!data.elements||!data.elements.length){
-      /* Fallback: wider search for any public building */
-      fetchFallbackShelters(lat,lng,callback);
-      return;
-    }
-    var shelters=[];
-    var seen={};
-    data.elements.forEach(function(el){
-      var elat=el.lat||(el.center&&el.center.lat);
-      var elng=el.lon||(el.center&&el.center.lon);
-      if(!elat||!elng)return;
-      var key=elat.toFixed(4)+','+elng.toFixed(4);
-      if(seen[key])return;seen[key]=true;
-      shelters.push({
-        name:shelterName(el.tags),
-        type:shelterType(el.tags),
-        lat:elat,lng:elng,
-        icon:shelterIcon(el.tags)
-      });
-    });
-    if(shelters.length===0){fetchFallbackShelters(lat,lng,callback);return;}
-    callback(shelters);
+}
+
+function tryOvp(query,i){
+  if(i>=OVP.length)return Promise.reject('all failed');
+  setS('load','Сервер '+(i+1)+'/'+OVP.length);
+  return fetch(OVP[i]+'?data='+encodeURIComponent(query),{cache:'no-store'})
+    .then(function(r){if(!r.ok)throw 0;return r.json()})
+    .then(function(d){if(!d||!d.elements)throw 0;return d.elements})
+    .catch(function(){return tryOvp(query,i+1)});
+}
+
+function parse(els){
+  var sh=[],seen={};
+  els.forEach(function(el){
+    var lat=el.lat||(el.center&&el.center.lat);
+    var lng=el.lon||(el.center&&el.center.lon);
+    if(!lat||!lng)return;
+    var k=lat.toFixed(4)+','+lng.toFixed(4);
+    if(seen[k])return;seen[k]=true;
+    sh.push({name:sName(el.tags),type:sType(el.tags),lat:lat,lng:lng,icon:sIcon(el.tags)});
+  });
+  return sh;
+}
+
+function findSh(lat,lng,cb){
+  showLoad('Ищу укрытия в радиусе 2 км...');
+  tryOvp(buildQ(lat,lng,2000),0).then(function(els){
+    var sh=parse(els);
+    if(sh.length>0)return sh;
+    showLoad('Мало результатов — расширяю до 5 км...');
+    return tryOvp(buildQ(lat,lng,5000),0).then(parse);
+  }).then(function(sh){
+    cb(sh.length>0?null:'Не нашёл укрытий в радиусе 5 км',sh||[]);
   }).catch(function(){
-    fetchFallbackShelters(lat,lng,callback);
+    cb('Все серверы недоступны. Проверь интернет.');
   });
 }
 
-function fetchFallbackShelters(lat,lng,callback){
-  /* Wider search: public buildings that could serve as shelter */
-  var radius=2000;
-  var query='[out:json][timeout:10];('
-    +'node["amenity"~"hospital|school|community_centre|public_building"](around:'+radius+','+lat+','+lng+');'
-    +'way["amenity"~"hospital|school|community_centre|public_building"](around:'+radius+','+lat+','+lng+');'
-    +'node["building"~"public|civic"](around:'+radius+','+lat+','+lng+');'
-    +'way["building"~"public|civic"](around:'+radius+','+lat+','+lng+');'
-    +');out center body 15;';
-  var url='https://overpass-api.de/api/interpreter?data='+encodeURIComponent(query);
-  fetch(url,{cache:'no-store'}).then(function(r){return r.json()}).then(function(data){
-    var shelters=[];
-    if(data&&data.elements){
-      var seen={};
-      data.elements.forEach(function(el){
-        var elat=el.lat||(el.center&&el.center.lat);
-        var elng=el.lon||(el.center&&el.center.lon);
-        if(!elat||!elng)return;
-        var key=elat.toFixed(4)+','+elng.toFixed(4);
-        if(seen[key])return;seen[key]=true;
-        shelters.push({
-          name:shelterName(el.tags),
-          type:(el.tags&&el.tags.amenity?el.tags.amenity.replace(/_/g,' '):'Общественное здание'),
-          lat:elat,lng:elng,
-          icon:shelterIcon(el.tags)
-        });
-      });
-    }
-    callback(shelters);
-  }).catch(function(){
-    callback([]);
-  });
+function revGeo(lat,lng,cb){
+  fetch('https://nominatim.openstreetmap.org/reverse?format=json&lat='+lat+'&lon='+lng+'&zoom=14&accept-language=ru')
+    .then(function(r){return r.json()})
+    .then(function(d){cb(d.address&&(d.address.city||d.address.town||d.address.village||d.address.suburb)||'')})
+    .catch(function(){cb('')});
 }
 
-/* ---- REVERSE GEOCODE to get user's city name ---- */
-function reverseGeocode(lat,lng,callback){
-  var url='https://nominatim.openstreetmap.org/reverse?format=json&lat='+lat+'&lon='+lng+'&zoom=14&accept-language=ru';
-  fetch(url).then(function(r){return r.json()}).then(function(d){
-    var city=d.address&&(d.address.city||d.address.town||d.address.village||d.address.suburb)||'';
-    callback(city);
-  }).catch(function(){callback('')});
-}
+/* ========== UI ========== */
+function showLoad(msg){$('main').innerHTML='<div class="loading"><div class="spinner"></div><p>'+msg+'</p></div>'}
+function showErr(msg){$('main').innerHTML='<div class="error"><div class="ico">😕</div><p>'+msg+'</p><button class="retry-btn" onclick="doLocate()">🔄 Попробовать снова</button></div>';setS('err','ОШИБКА')}
 
-/* ---- INIT ---- */
-function init(){
-  var c=ld('cfg');if(c){S.cfg.offline=c.offline!==false;S.cfg.refresh=c.refresh!==false}
-  S.runs=ld('runs')||0;S.spr=ld('spr')||95;
-  var h=ld('history');if(h&&Array.isArray(h))S.history=h;
-  S.cityName=ld('cityName')||null;
-  var cachedShelters=ld('localShelters');
-  if(cachedShelters&&Array.isArray(cachedShelters)&&cachedShelters.length)S.localShelters=cachedShelters;
-  $('tOffline').classList.toggle('on',S.cfg.offline);
-  $('tRefresh').classList.toggle('on',S.cfg.refresh);
-  var tabs=document.querySelectorAll('.tab');
-  for(var i=0;i<tabs.length;i++)tabs[i].addEventListener('click',function(){showPanel(this.dataset.tab)});
-  var pills=document.querySelectorAll('.pill');
-  for(var i=0;i<pills.length;i++)pills[i].addEventListener('click',function(){var a=document.querySelectorAll('.pill');for(var j=0;j<a.length;j++)a[j].classList.remove('on');this.classList.add('on');S.filter=this.dataset.f;renderLog()});
-  chkOnline();window.addEventListener('online',chkOnline);window.addEventListener('offline',chkOnline);
-  fetchHist();if(S.cfg.refresh)startPoll();renderFit()
-}
+function render(){
+  var sorted=S.shelters.map(function(s){
+    return{name:s.name,type:s.type,lat:s.lat,lng:s.lng,icon:s.icon,dist:Math.round(hav(S.lat,S.lng,s.lat,s.lng))};
+  }).sort(function(a,b){return a.dist-b.dist});
 
-function chkOnline(){$('offlineStrip').classList.toggle('show',!navigator.onLine);if(navigator.onLine&&S.cfg.refresh){fetchAl();fetchHist()}}
-function showPanel(id){var t=document.querySelectorAll('.tab'),p=document.querySelectorAll('.panel');for(var i=0;i<t.length;i++)t[i].classList.toggle('active',t[i].dataset.tab===id);for(var i=0;i<p.length;i++)p[i].classList.toggle('active',p[i].id==='p-'+id);document.querySelector('.content').scrollTop=0}
-window.showPanel=showPanel;
+  var near=sorted[0],h='';
 
-window.togSetting=function(k,el){el.classList.toggle('on');var on=el.classList.contains('on');if(k==='offline')S.cfg.offline=on;if(k==='refresh'){S.cfg.refresh=on;on?startPoll():stopPoll()}sv('cfg',S.cfg)};
-window.resetFitness=function(){S.runs=0;S.spr=80+Math.floor(Math.random()*40);sv('runs',0);sv('spr',S.spr);renderFit()};
+  h+='<div class="results-hdr"><div><h2>Укрытия рядом <span style="color:var(--green)">·</span> '+sorted.length+'</h2>';
+  if(S.city)h+='<div class="loc">📍 '+S.city+'</div>';
+  h+='</div><button class="rescan" onclick="doLocate()">🔄 Обновить</button></div>';
 
-function startPoll(){stopPoll();fetchAl();S.pollIv=setInterval(fetchAl,10000)}
-function stopPoll(){if(S.pollIv){clearInterval(S.pollIv);S.pollIv=null}}
+  h+='<div class="map-card">';
+  h+='<iframe src="https://maps.google.com/maps?q='+near.lat+','+near.lng+'&z=17&output=embed" loading="lazy"></iframe>';
+  h+='<div class="map-meta"><span class="coord">'+S.lat.toFixed(4)+', '+S.lng.toFixed(4)+'</span><span class="city">'+(S.city||'')+'</span></div>';
+  h+='</div>';
 
-function tryFetch(url,opts){
-  return fetch(url,Object.assign({cache:'no-store'},opts||{})).then(function(r){if(!r.ok)throw new Error(r.status);return r.text()})
-}
-function proxyUrl(u){return'https://api.allorigins.win/raw?url='+encodeURIComponent(u)}
-
-function fetchAl(){
-  var url='https://www.oref.org.il/WarningMessages/alert/alerts.json';
-  var hdrs={headers:{'Referer':'https://www.oref.org.il/','X-Requested-With':'XMLHttpRequest'}};
-  tryFetch(url,hdrs).catch(function(){return tryFetch(proxyUrl(url))}).then(function(t){
-    t=t.replace(/^\uFEFF/,'').trim();setC('live');
-    if(!t||t==='[]'||t==='{}'){if(S.active)clrAl();return}
-    var d=JSON.parse(t);if(d&&d.data&&d.data.length>0)fireAl(d);else if(S.active)clrAl()
-  }).catch(function(){setC('off')})
-}
-
-function fetchHist(){
-  var url1='https://www.oref.org.il/WarningMessages/alert/History/AlertsHistory.json';
-  var hdrs={headers:{'Referer':'https://www.oref.org.il/','X-Requested-With':'XMLHttpRequest'}};
-  var url2='https://api.tzevaadom.co.il/alerts-history';
-
-  /* Step 1: Try oref.org.il direct */
-  tryFetch(url1,hdrs).then(parseOrefHist).catch(function(){
-    /* Step 2: Try oref via CORS proxy */
-    return tryFetch(proxyUrl(url1)).then(parseOrefHist);
-  }).catch(function(){
-    /* Step 3: Try tzevaadom direct */
-    return tryFetch(url2).then(function(t){return JSON.parse(t)}).then(parseTzevaHist);
-  }).catch(function(){
-    /* Step 4: Try tzevaadom via CORS proxy */
-    return tryFetch(proxyUrl(url2)).then(function(t){return JSON.parse(t)}).then(parseTzevaHist);
-  }).catch(function(){
-    /* Step 5: All failed — use demo */
-    if(!S.history.length||S.dataSource!=='live')genDemo();
-    setC('demo');rv()
-  })
-}
-
-function parseOrefHist(t){
-  t=t.replace(/^\uFEFF/,'').trim();
-  if(!t)throw new Error('empty');
-  var d=JSON.parse(t);
-  if(!Array.isArray(d)||!d.length)throw new Error('empty');
-  S.history=d;S.dataSource='live';
-  if(S.cfg.offline)sv('history',d);
-  setC('live');rv()
-}
-function parseTzevaHist(d){
-  if(!Array.isArray(d)||!d.length)throw new Error('empty');
-  S.history=d.map(function(a){return{alertDate:a.date||a.alertDate||'',title:a.title||'',data:a.cities?a.cities.join(', '):(a.data||''),category:a.category||a.cat||1}});
-  S.dataSource='live';
-  if(S.cfg.offline)sv('history',S.history);
-  setC('live');rv()
-}
-
-/* ---- FIX: Demo data uses user's city if known, or generic Israeli cities ---- */
-function genDemo(){
-  var now=new Date(),d=[];
-  /* Build city list based on user's location or use broad Israeli defaults */
-  var ci;
-  if(S.cityName){
-    /* Use the user's actual city + nearby generic areas */
-    ci=[S.cityName, S.cityName+' — центр', S.cityName+' — восток', S.cityName+' — запад', S.cityName+' — север', S.cityName+' — юг'];
-  } else {
-    /* Generic demo cities across Israel, not just Nahariya */
-    ci=['Центр','Север','Юг','Тель-Авив','Хайфа','Иерусалим','Беэр-Шева','Ашдод','Нетания','Петах-Тиква','Ришон ле-Цион','Кфар-Саба'];
-  }
-  for(var i=0;i<30;i++){var n=i<2?3+~~(Math.random()*8):i<7?1+~~(Math.random()*5):~~(Math.random()*3);for(var a=0;a<n;a++){var dt=new Date(now);dt.setDate(dt.getDate()-i);dt.setHours(~~(Math.random()*24));dt.setMinutes(~~(Math.random()*60));d.push({alertDate:dt.toISOString().replace('T',' ').slice(0,19),title:Math.random()>.2?'ירי רקטות וטילים':'חדירת כלי טיס עוין',data:ci[~~(Math.random()*ci.length)],category:Math.random()>.2?1:2})}}
-  d.sort(function(a,b){return new Date(b.alertDate)-new Date(a.alertDate)});S.history=d;if(S.cfg.offline)sv('history',d)
-}
-
-function fireAl(data){var cat=CATS[data.cat]||CATS[1];S.active=data;$('alertBanner').classList.add('active');$('aTitle').textContent=cat.name;$('aCities').textContent=(data.data||[]).join(' · ');$('sOrb').className='status-orb danger';$('sOrb').textContent=cat.emoji;$('sMain').textContent='🚨 ТРЕВОГА';$('sSub').textContent=cat.name;S.runs++;sv('runs',S.runs);renderFit();if(cat.shelter>0)startTm(cat.shelter)}
-function clrAl(){S.active=null;$('alertBanner').classList.remove('active');$('sOrb').className='status-orb safe';$('sOrb').textContent='🛡️';$('sMain').textContent='Всё спокойно';$('sSub').textContent='Нет активных тревог';if(S.timerIv){clearInterval(S.timerIv);S.timerIv=null}}
-function startTm(sec){if(S.timerIv)clearInterval(S.timerIv);var r=sec;dTm(r);S.timerIv=setInterval(function(){r--;if(r<=0){clearInterval(S.timerIv);S.timerIv=null;$('aTimer').textContent='00:00'}else dTm(r)},1000)}
-function dTm(s){$('aTimer').textContent=(s<600?'0':'')+~~(s/60)+':'+(s%60<10?'0':'')+(s%60)}
-
-/* ---- FIX: Simulation uses user's city, not hardcoded Nahariya ---- */
-var simOn=false;
-window.triggerAlert=function(){
-  if(simOn)return;simOn=true;
-  var simCities;
-  if(S.cityName){
-    simCities=[S.cityName, S.cityName+' — центр', S.cityName+' — восток'];
-  } else {
-    simCities=['Ваш район','Район — центр','Район — восток'];
-  }
-  fireAl({cat:1,data:simCities});
-  setTimeout(function(){clrAl();simOn=false},91000);
-  if(S.lat&&S.localShelters.length){
-    var sorted=getSorted();
-    if(sorted[0])$('sSub').textContent='🏃 '+sorted[0].icon+' '+sorted[0].name+' — '+sorted[0].dist+'м';
-  }
-};
-
-function setC(v){
-  S.conn=v;
-  if(v==='live'){
-    $('connDot').className='conn-dot live';$('connLabel').textContent='LIVE';
-  } else if(v==='demo'){
-    $('connDot').className='conn-dot';$('connLabel').textContent='DEMO';
-  } else {
-    $('connDot').className='conn-dot err';$('connLabel').textContent=navigator.onLine?'DEMO':'OFF';
-    if(S.dataSource!=='live')S.dataSource='demo';
-  }
-}
-
-/* ---- FIX: GPS now fetches local shelters from Overpass ---- */
-window.requestGPS=function(){
-  if(!navigator.geolocation){alert('GPS недоступен');return}
-  $('shelterContent').innerHTML='<div class="sh-loading"><div class="spinner"></div><p>📡 Определяю координаты...</p></div>';
-  navigator.geolocation.getCurrentPosition(onGPS,onGPSErr,{enableHighAccuracy:true,timeout:10000})
-};
-
-function getSorted(){
-  return S.localShelters.map(function(s){
-    return{name:s.name,type:s.type,lat:s.lat,lng:s.lng,icon:s.icon,dist:Math.round(hav(S.lat,S.lng,s.lat,s.lng))}
-  }).sort(function(a,b){return a.dist-b.dist})
-}
-
-function onGPS(pos){
-  S.lat=pos.coords.latitude;S.lng=pos.coords.longitude;
-  $('shelterContent').innerHTML='<div class="sh-loading"><div class="spinner"></div><p>🔍 Ищу укрытия рядом с тобой...</p></div>';
-
-  /* Reverse geocode to get city name */
-  reverseGeocode(S.lat,S.lng,function(city){
-    if(city){S.cityName=city;sv('cityName',city)}
-  });
-
-  /* Fetch real local shelters */
-  fetchLocalShelters(S.lat,S.lng,function(shelters){
-    if(shelters.length>0){
-      S.localShelters=shelters;
-      sv('localShelters',shelters);
-      renderShelters();
-    } else {
-      /* No shelters found at all */
-      $('shelterContent').innerHTML='<div class="gps-prompt"><p>😕 Не нашёл убежищ в радиусе 2 км.<br>Попробуй из другого места или позже.</p><button class="gps-btn" onclick="requestGPS()">🔄 Ещё раз</button></div>';
-    }
-  });
-}
-
-function renderShelters(){
-  var sorted=getSorted(),near=sorted[0];
-  $('shelterTimeNum').textContent=wt(near.dist);
-  var h='';for(var i=0;i<Math.min(sorted.length,8);i++){
-    var s=sorted[i],dc=s.dist<150?'close':s.dist<400?'mid':'far';
+  var cnt=Math.min(sorted.length,12);
+  for(var i=0;i<cnt;i++){
+    var s=sorted[i],d=dc(s.dist);
     var url='https://www.google.com/maps/dir/?api=1&origin='+S.lat+','+S.lng+'&destination='+s.lat+','+s.lng+'&travelmode=walking';
-    h+='<div class="sh-card'+(i===0?' nearest':'')+'" onclick="window.open(\''+url+'\',\'_blank\')"><div class="sh-info"><div class="sh-name">'+s.icon+' '+s.name+'</div><div class="sh-type">'+s.type+'</div><div class="sh-walk">🚶 '+wt(s.dist)+' пешком · маршрут →</div></div><div class="sh-dist '+dc+'">'+s.dist+'м</div></div>';
+    h+='<div class="sh'+(i===0?' top':'')+'" onclick="window.open(\''+url+'\',\'_blank\')">';
+    h+='<div class="sh-ico">'+s.icon+'</div>';
+    h+='<div class="sh-body">';
+    h+='<div class="sh-name">'+s.name+'</div>';
+    h+='<div class="sh-type">'+s.type+'</div>';
+    h+='<div class="sh-walk"><span class="time">🚶 '+wt(s.dist)+'</span> <span class="arrow">→ маршрут</span></div>';
+    h+='</div>';
+    h+='<div class="sh-dist '+d+'">'+s.dist+'<small>м</small></div>';
+    h+='</div>';
   }
-  $('shelterContent').innerHTML=h;
-  var mf=$('mapFrame');mf.style.display='block';
-  var ru='https://www.google.com/maps/dir/?api=1&origin='+S.lat+','+S.lng+'&destination='+near.lat+','+near.lng+'&travelmode=walking';
-  mf.innerHTML='<div class="map-bar" style="border-top:none;border-bottom:1px solid var(--border)"><span style="color:var(--text2)">📍 '+near.icon+' '+near.name+' · '+near.dist+'м</span><a href="'+ru+'" target="_blank">↗ маршрут</a></div><iframe src="https://maps.google.com/maps?q='+near.lat+','+near.lng+'&z=16&output=embed" loading="lazy"></iframe><div class="map-bar"><span style="color:var(--text2);font-family:var(--mono);font-size:10px">'+S.lat.toFixed(4)+', '+S.lng.toFixed(4)+'</span><span style="color:var(--text2);font-size:10px">'+(S.cityName||'')+'</span></div>';
+
+  h+='<div class="info">Данные: <a href="https://openstreetmap.org" target="_blank">OpenStreetMap</a> · Overpass API<br>⚠️ Не заменяет приложение Пикуд ха-Ореф</div>';
+
+  $('main').innerHTML=h;
+  setS('ok',sorted.length+' найдено');
 }
 
-function onGPSErr(e){var m={1:'🚫 Доступ запрещён',2:'📡 Не определилось',3:'⏱ Таймаут'};$('shelterContent').innerHTML='<div class="gps-prompt"><p>'+(m[e.code]||'Ошибка')+'</p><button class="gps-btn" onclick="requestGPS()">🔄 Ещё раз</button></div>'}
+/* ========== MAIN ========== */
+window.doLocate=function(){
+  if(!navigator.geolocation){showErr('GPS недоступен');return}
+  showLoad('Определяю координаты...');
+  setS('load','GPS...');
 
-function rv(){renderStats();renderLog();renderDemoBanners()}
-function renderDemoBanners(){
-  var isDemo=S.dataSource!=='live';
-  var banner='<div class="demo-banner"><span class="demo-tag">DEMO</span>API недоступен — показаны примерные данные. Из Израиля данные будут реальными.</div>';
-  var el1=$('demoBannerStats'),el2=$('demoBannerLog'),el3=$('demoBannerHome');
-  if(el1)el1.innerHTML=isDemo?banner:'';
-  if(el2)el2.innerHTML=isDemo?banner:'';
-  if(el3)el3.innerHTML=isDemo?banner:'';
-}
-function renderStats(){
-  var now=new Date(),ts=now.toISOString().slice(0,10),wa=new Date(now);wa.setDate(wa.getDate()-7);
-  var td=0,wk=0,dc={},rc={};
-  for(var i=0;i<S.history.length;i++){var a=S.history[i],d=new Date(a.alertDate),dk=d.toISOString().slice(0,10);if(dk===ts)td++;if(d>=wa)wk++;dc[dk]=(dc[dk]||0)+1;var r=(a.data||'').split(' - ')[0].split(' — ')[0].trim();if(r)rc[r]=(rc[r]||0)+1}
-  $('mToday').textContent=td;$('mWeek').textContent=wk;$('mTotal').textContent=S.history.length;
-  $('sToday').textContent=td;$('sWeek').textContent=wk;$('sTotal').textContent=S.history.length;
-  var dn=['Вс','Пн','Вт','Ср','Чт','Пт','Сб'],days=[],mx=1;
-  for(var i=6;i>=0;i--){var dd=new Date(now);dd.setDate(dd.getDate()-i);var k=dd.toISOString().slice(0,10);days.push({l:dn[dd.getDay()],c:dc[k]||0})}
-  for(var i=0;i<days.length;i++)if(days[i].c>mx)mx=days[i].c;
-  var bh='';for(var i=0;i<days.length;i++)bh+='<div class="bar-r"><div class="bar-lbl">'+days[i].l+'</div><div class="bar-track"><div class="bar-fill red" style="width:'+(days[i].c/mx*100)+'%"></div></div><div class="bar-val">'+days[i].c+'</div></div>';
-  $('weekBars').innerHTML=bh;
-  var ra=[];for(var r in rc)ra.push([r,rc[r]]);ra.sort(function(a,b){return b[1]-a[1]});ra=ra.slice(0,5);
-  if(!ra.length){$('topRegions').innerHTML='<div style="color:var(--text2);font-size:12px">Нет данных</div>';return}
-  var rm=ra[0][1],rh='';for(var i=0;i<ra.length;i++)rh+='<div class="bar-r" style="margin-bottom:5px"><div class="bar-lbl" style="width:80px;font-family:var(--font);font-size:11px">'+ra[i][0]+'</div><div class="bar-track"><div class="bar-fill blue" style="width:'+(ra[i][1]/rm*100)+'%"></div></div><div class="bar-val">'+ra[i][1]+'</div></div>';
-  $('topRegions').innerHTML=rh
-}
-function renderLog(){
-  var list=S.history;if(S.filter!=='all'){list=[];for(var i=0;i<S.history.length;i++)if(String(S.history[i].category)===S.filter)list.push(S.history[i])}
-  if(!list.length){$('logList').innerHTML='<div class="empty"><div class="empty-icon">🕊️</div><p>Нет тревог.<br>Пусть так и будет!</p></div>';return}
-  var h='',mx=Math.min(list.length,60);
-  for(var i=0;i<mx;i++){var a=list[i],cat=CATS[a.category]||CATS[1],d=new Date(a.alertDate),ts=d.toLocaleString('ru-RU',{day:'numeric',month:'numeric',hour:'2-digit',minute:'2-digit'}),dc=a.category==2?'c2':a.category==3?'c3':'c1';h+='<div class="log-item"><div class="log-dot '+dc+'"></div><div class="log-body"><div class="log-title">'+cat.emoji+' '+cat.name+'</div><div class="log-cities">'+(a.data||'')+'</div></div><div class="log-time">'+ts+'</div></div>'}
-  $('logList').innerHTML=h
-}
-function renderFit(){
-  var r=S.runs,st=r*S.spr,ca=Math.round(r*18.5);
-  $('fSteps').textContent=st.toLocaleString();$('fCals').textContent=ca;$('fTRuns').textContent=r;$('fTSteps').textContent=st.toLocaleString();$('fTCals').textContent=ca;
-  $('fStepsDesc').textContent=!r?'Ни одного забега. Тихий день! 🙏':r<3?r+' забег(а). Разминка.':r<7?r+' забегов! В форме.':r+' забегов?! Машина! 💪';
-  var rw=FOOD[0];for(var i=0;i<FOOD.length;i++)if(ca>=FOOD[i].c)rw=FOOD[i];$('fReward').textContent=rw.t;
-  var rk=RANKS[0];for(var i=0;i<RANKS.length;i++)if(r>=RANKS[i].n)rk=RANKS[i];$('fRank').textContent=rk.r;$('fRankDesc').textContent=rk.d
-}
-init()
+  navigator.geolocation.getCurrentPosition(function(pos){
+    S.lat=pos.coords.latitude;
+    S.lng=pos.coords.longitude;
+    showLoad('Координаты: '+S.lat.toFixed(4)+', '+S.lng.toFixed(4));
+    revGeo(S.lat,S.lng,function(c){S.city=c});
+    findSh(S.lat,S.lng,function(err,sh){
+      if(err){showErr(err+'<br><br>Координаты: '+S.lat.toFixed(5)+', '+S.lng.toFixed(5));return}
+      S.shelters=sh;
+      render();
+    });
+  },function(e){
+    var m={1:'Доступ запрещён. Разреши геолокацию в настройках.',2:'Не удалось определить место.',3:'Таймаут — попробуй снова.'};
+    showErr(m[e.code]||'Ошибка GPS');
+  },{enableHighAccuracy:true,timeout:12000,maximumAge:0});
+};
+
 })();
 </script>
 </body>
